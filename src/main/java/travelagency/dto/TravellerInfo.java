@@ -1,16 +1,18 @@
-package travelagency.domain;
+package travelagency.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import travelagency.domain.Program;
 import travelagency.domain.enums.Destination;
 
 import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class Travel {
+public class TravellerInfo {
     private Integer id;
+    private String Name;
+    private Integer yearOfBirth;
     private Destination destination;
-    private List<Traveller> travellers;
-    private double wholePrice;
+    private List<ProgramInfo> programs;
 }
