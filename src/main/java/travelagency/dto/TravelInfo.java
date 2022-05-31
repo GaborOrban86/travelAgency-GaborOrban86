@@ -12,6 +12,6 @@ import java.util.List;
 public class TravelInfo {
     private Integer id;
     private Destination destination;
-    private List<Traveller> travellers;
+    private List<TravellerInfo> travellers;
     private double wholePrice;
 }

@@ -14,5 +14,8 @@ public class TravellerInfo {
     private String Name;
     private Integer yearOfBirth;
     private Destination destination;
-    private List<ProgramInfo> programs;
+    private List<String> programNames;
+    private String email;
+    private String accommodationName;
+    private double allFees;
 }

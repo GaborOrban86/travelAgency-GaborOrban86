@@ -16,7 +16,7 @@ public class ProgramInfo {
     private String description;
     private double price;
     private String guide;
-    private List<TravellerInfo> participants;
+    private List<String> participantNames;
     private double minimumNumberOfParticipants;
     private double maximumNumberOfParticipants;
 }
