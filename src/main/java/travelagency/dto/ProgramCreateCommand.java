@@ -16,7 +16,7 @@ public class ProgramCreateCommand {
     private String name;
 
     @NotBlank(message = "Must be not blank!")
-    private Destination city;
+    private String city;
 
     @NotBlank(message = "Must be not blank!")
     private String description;

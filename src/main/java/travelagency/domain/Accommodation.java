@@ -3,7 +3,6 @@ package travelagency.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import travelagency.domain.enums.AccommodationType;
-import travelagency.domain.enums.Nights;
 import travelagency.domain.enums.Service;
 
 import javax.persistence.*;
@@ -20,7 +19,6 @@ public class Accommodation {
 
     private String name;
     private AccommodationType type;
-    private Nights nights;
     private Service service;
 
     @OneToMany(mappedBy = "accommodation")

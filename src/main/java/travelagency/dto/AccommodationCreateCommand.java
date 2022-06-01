@@ -3,11 +3,10 @@ package travelagency.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import travelagency.domain.enums.AccommodationType;
-import travelagency.domain.enums.Nights;
 import travelagency.domain.enums.Service;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
@@ -17,7 +16,8 @@ public class AccommodationCreateCommand {
     private AccommodationType type;
 
     @NotBlank(message = "Must be not blank!")
-    private Nights nights;
+    @Min(0)
+    private Integer nights;
 
     @NotBlank(message = "Must be not blank!")
     private Service service;

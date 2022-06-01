@@ -10,7 +10,7 @@ import java.util.List;
 public class ProgramInfo {
     private Integer id;
     private String name;
-    private Destination city;
+    private String city;
     private String description;
     private double price;
     private String guide;

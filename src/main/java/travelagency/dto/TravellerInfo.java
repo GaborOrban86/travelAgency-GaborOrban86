@@ -2,6 +2,7 @@ package travelagency.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import travelagency.domain.Destination;
 
 import java.util.List;
 
@@ -10,10 +11,10 @@ import java.util.List;
 public class TravellerInfo {
     private Integer id;
     private String Name;
-    private Integer yearOfBirth;
-    private Destination destination;
-    private List<String> programNames;
     private String email;
-    private String accommodationName;
+    private String accommodationNameAndType;
+    private Integer yearOfBirth;
+    private String travelCity;
+    private List<String> programNames;
     private double allFees;
 }
