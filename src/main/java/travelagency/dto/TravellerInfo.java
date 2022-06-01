@@ -2,8 +2,6 @@ package travelagency.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import travelagency.domain.Program;
-import travelagency.domain.enums.Destination;
 
 import java.util.List;
 
