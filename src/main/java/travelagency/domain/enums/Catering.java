@@ -1,5 +1,5 @@
 package travelagency.domain.enums;
 
-public enum Service {
+public enum Catering {
     FULL, HALF, NOTHING
 }

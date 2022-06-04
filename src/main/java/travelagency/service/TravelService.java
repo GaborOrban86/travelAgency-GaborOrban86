@@ -57,7 +57,7 @@ public class TravelService {
         toSave.setTravellers(new ArrayList<>());
         toSave.setPrograms(new ArrayList<>());
         toSave.setDays((int) DAYS.between(command.getStartDate(), command.getEndDate()));
-        toSave.setWholePrice(toSave.getDestination().getPrice());
+        toSave.setWholePrice(toSave.getDestination().getPrice() * toSave.getDays());
 
         Travel saved = travelRepository.save(toSave);
         return modelMapper.map(saved, TravelInfo.class);
