@@ -18,4 +18,18 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.toList());
         return new ResponseEntity<>(validationErrors, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(DestinationNotFoundException.class)
+    public ResponseEntity<List<ValidationError>> handleDestinationNotFoundException(DestinationNotFoundException exception) {
+        ValidationError validationError = new ValidationError("destinationName",
+                "no destination found with name");
+        return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(TravelNotFoundException.class)
+    public ResponseEntity<List<ValidationError>> handleTravelNotFoundException(TravelNotFoundException exception) {
+        ValidationError validationError = new ValidationError("travelId",
+                "no travel found with id");
+        return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
+    }
 }

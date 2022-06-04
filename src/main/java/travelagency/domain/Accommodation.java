@@ -6,7 +6,6 @@ import travelagency.domain.enums.AccommodationType;
 import travelagency.domain.enums.Service;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -21,8 +20,9 @@ public class Accommodation {
     private AccommodationType type;
     private Service service;
 
-    @OneToMany(mappedBy = "accommodation")
-    private List<Traveller> guests;
+    @OneToOne
+    @JoinColumn(name = "travel_id")
+    private Travel travel;
 
     private double price;
 }

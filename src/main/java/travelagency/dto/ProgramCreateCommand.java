@@ -3,8 +3,6 @@ package travelagency.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -27,11 +25,6 @@ public class ProgramCreateCommand {
     @NotBlank(message = "Must be not blank!")
     private String guide;
 
-    @NotNull(message = "Must be not null!")
-    @Min(0)
-    private double minimumNumberOfParticipants;
-
-    @NotNull(message = "Must be not null!")
-    @Max(20)
-    private double maximumNumberOfParticipants;
+    @NotBlank(message = "Must be not blank!")
+    private String travelId;
 }

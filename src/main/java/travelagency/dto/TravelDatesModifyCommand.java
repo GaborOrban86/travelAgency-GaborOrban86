@@ -10,11 +10,7 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-public class TravelCreateCommand {
-
-    @NotBlank(message = "Must be not blank!")
-    private String cityOfDestination;
-
+public class TravelDatesModifyCommand {
     @NotBlank(message = "Must be not blank!")
     @Future
     private LocalDate startDate;

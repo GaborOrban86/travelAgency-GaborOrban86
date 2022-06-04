@@ -1,19 +1,18 @@
 package travelagency.service;
 
-
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import travelagency.repository.TravelRepository;
+import travelagency.repository.TravellerRepository;
 
 @Service
 @Transactional
 public class TravellerService {
+    private final TravellerRepository travellerRepository;
+    private final TravelRepository travelRepository;
 
-    private final TravellerService travellerService;
-    private final ModelMapper modelMapper;
-
-    public TravellerService(TravellerService travellerService, ModelMapper modelMapper) {
-        this.travellerService = travellerService;
-        this.modelMapper = modelMapper;
+    public TravellerService(TravellerRepository travellerRepository, TravelRepository travelRepository) {
+        this.travellerRepository = travellerRepository;
+        this.travelRepository = travelRepository;
     }
 }

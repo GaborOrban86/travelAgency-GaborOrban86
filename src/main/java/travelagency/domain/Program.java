@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -21,8 +20,7 @@ public class Program {
     private double price;
     private String guide;
 
-    @ManyToMany(mappedBy = "programs", fetch = FetchType.LAZY)
-    private List<Traveller> participants;
-    private double minimumNumberOfParticipants;
-    private double maximumNumberOfParticipants;
+    @ManyToOne
+    @JoinColumn(name = "travel_id")
+    private Travel travel;
 }

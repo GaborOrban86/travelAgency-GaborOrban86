@@ -13,15 +13,20 @@ import javax.validation.constraints.NotBlank;
 public class AccommodationCreateCommand {
 
     @NotBlank(message = "Must be not blank!")
-    private AccommodationType type;
+    private String name;
 
     @NotBlank(message = "Must be not blank!")
-    @Min(0)
-    private Integer nights;
+    private AccommodationType type;
 
     @NotBlank(message = "Must be not blank!")
     private Service service;
 
     @NotBlank(message = "Must be not blank!")
+    private String travelCity;
+
+    @NotBlank(message = "Must be not blank!")
     private double price;
+
+    @NotBlank(message = "Must be not blank!")
+    private String travelId;
 }

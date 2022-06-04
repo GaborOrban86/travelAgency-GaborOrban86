@@ -3,6 +3,7 @@ package travelagency.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import travelagency.service.TravelService;
 import travelagency.service.TravellerService;
 
 @RestController
