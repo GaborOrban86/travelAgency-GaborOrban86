@@ -20,9 +20,8 @@ public class TravelRepository {
         return toSave;
     }
 
-    public Optional<Travel> findById(Integer id) {
-        Travel travel = entityManager.find(Travel.class, id);
-        return Optional.of(travel);
+    public Travel findById(Integer id) {
+        return entityManager.find(Travel.class, id);
     }
 
     public List<Travel> findAll() {

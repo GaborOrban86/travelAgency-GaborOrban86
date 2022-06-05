@@ -32,4 +32,11 @@ public class GlobalExceptionHandler {
                 "no travel found with id");
         return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(AccommodationNotFoundException.class)
+    public ResponseEntity<List<ValidationError>> handleAccommodationNotFoundException(AccommodationNotFoundException exception) {
+        ValidationError validationError = new ValidationError("travelId",
+                "no accommodation found with id");
+        return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
+    }
 }

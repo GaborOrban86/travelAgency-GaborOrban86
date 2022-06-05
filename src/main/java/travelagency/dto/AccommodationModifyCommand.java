@@ -9,8 +9,7 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 @NoArgsConstructor
-public class AccommodationCreateCommand {
-
+public class AccommodationModifyCommand {
     @NotBlank(message = "Must be not blank!")
     private String name;
 
@@ -22,7 +21,4 @@ public class AccommodationCreateCommand {
 
     @NotBlank(message = "Must be not blank!")
     private double price;
-
-    @NotBlank(message = "Must be not blank!")
-    private Integer travelId;
 }

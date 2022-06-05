@@ -7,9 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import travelagency.domain.Accommodation;
 import travelagency.domain.Destination;
 import travelagency.domain.Travel;
-import travelagency.dto.TravelCreateCommand;
-import travelagency.dto.TravelDatesModifyCommand;
-import travelagency.dto.TravelInfo;
+import travelagency.dto.*;
+import travelagency.exceptionhandling.AccommodationNotFoundException;
 import travelagency.exceptionhandling.DestinationNotFoundException;
 import travelagency.exceptionhandling.TravelNotFoundException;
 import travelagency.repository.AccommodationRepository;
@@ -64,7 +63,7 @@ public class TravelService {
     }
 
     public TravelInfo findTravelById(Integer id) {
-        Optional<Travel> travelFound = travelRepository.findById(id);
+        Optional<Travel> travelFound = Optional.of(travelRepository.findById(id));
         if (travelFound.isEmpty()) {
             throw new TravelNotFoundException(id);
         }
@@ -79,7 +78,7 @@ public class TravelService {
     }
 
     public TravelInfo updateTravelDates(int id, TravelDatesModifyCommand command) {
-        Optional<Travel> travelFound = travelRepository.findById(id);
+        Optional<Travel> travelFound = Optional.of(travelRepository.findById(id));
         if (travelFound.isEmpty()) {
             throw new TravelNotFoundException(id);
         }
@@ -93,11 +92,80 @@ public class TravelService {
     }
 
     public void deleteTravel(int id) {
-        Optional<Travel> travelFound = travelRepository.findById(id);
+        Optional<Travel> travelFound = Optional.of(travelRepository.findById(id));
         if (travelFound.isEmpty()) {
             throw new TravelNotFoundException(id);
         }
         Travel foundTravel = travelFound.get();
         travelRepository.delete(foundTravel);
     }
+
+    public AccommodationInfo saveAccommodation(AccommodationCreateCommand command) {
+        Accommodation toSave = new Accommodation();
+
+        Optional<Travel> travelForAccommodation = Optional.of(travelRepository.findById(command.getTravelId()));
+
+        if (travelForAccommodation.isEmpty()) {
+            throw new TravelNotFoundException(command.getTravelId());
+        }
+
+        toSave.setName(command.getName());
+        toSave.setType(command.getType());
+        toSave.setCatering(command.getCatering());
+        toSave.setPrice(command.getPrice());
+
+
+        Travel travelFound = travelForAccommodation.get();
+        toSave.setTravel(travelFound);
+        travelFound.setWholePrice(travelFound.getWholePrice() + (toSave.getPrice() * travelFound.getDays()));
+
+        Accommodation saved = accommodationRepository.save(toSave);
+        return modelMapper.map(saved, AccommodationInfo.class);
+    }
+
+    public AccommodationInfo findAccommodationById(Integer id) {
+        Optional<Accommodation> accommodationFound = Optional.of(accommodationRepository.findById(id));
+        if (accommodationFound.isEmpty()) {
+            throw new AccommodationNotFoundException(id);
+        }
+        return modelMapper.map(accommodationFound, AccommodationInfo.class);
+    }
+
+    public List<AccommodationInfo> findAllAccommodations() {
+        List<Accommodation> accommodations = accommodationRepository.findAll();
+        return accommodations.stream()
+                .map(accommodation -> modelMapper.map(accommodation, AccommodationInfo.class))
+                .collect(Collectors.toList());
+    }
+
+    public AccommodationInfo modifyAccommodation(Integer id, AccommodationModifyCommand command) {
+        Accommodation toModify = accommodationRepository.findById(id);
+        Optional<Accommodation> accommodationFoundOptional = Optional.of(toModify);
+        if (accommodationFoundOptional.isEmpty()) {
+            throw new AccommodationNotFoundException(id);
+        }
+        Travel travelOfAccommodation = toModify.getTravel();
+        travelOfAccommodation.setWholePrice(
+                (travelOfAccommodation.getWholePrice() - (toModify.getPrice() * travelOfAccommodation.getDays())) +
+                        (command.getPrice() * travelOfAccommodation.getDays()));
+
+        toModify.setName(command.getName());
+        toModify.setType(command.getType());
+        toModify.setCatering(command.getCatering());
+        toModify.setPrice(command.getPrice());
+
+        return modelMapper.map(toModify, AccommodationInfo.class);
+    }
+
+    public void deleteAccommodation(int id) {
+        Optional<Accommodation> accommodationFound = Optional.of(accommodationRepository.findById(id));
+        if (accommodationFound.isEmpty()) {
+            throw new AccommodationNotFoundException(id);
+        }
+        Accommodation foundAccommodation = accommodationFound.get();
+        accommodationRepository.delete(foundAccommodation);
+    }
+
+
+
 }
