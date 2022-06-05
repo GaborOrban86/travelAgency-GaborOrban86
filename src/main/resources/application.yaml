@@ -10,7 +10,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
     show-sql: on
-logging:
-  level:
-    org:
-      flywaydb: debug
+#logging:
+#  level:
+#    org:
+#      flywaydb: debug

@@ -17,7 +17,4 @@ public class Destination {
     private String name;
     private Integer price;
 
-    @OneToOne
-    @JoinColumn(name = "travel_id")
-    private Travel travel;
 }
