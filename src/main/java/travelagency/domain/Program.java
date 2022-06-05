@@ -15,7 +15,6 @@ public class Program {
     private Integer id;
 
     private String name;
-    private String city;
     private String description;
     private double price;
     private String guide;

@@ -3,6 +3,7 @@ package travelagency.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -16,15 +17,14 @@ public class Traveller {
     private String Name;
     private String email;
 
-    @OneToOne
-    private Accommodation accommodation;
-
-    private Integer yearOfBirth;
-
-    private double allFees;
+    private LocalDate birthday;
+    private long age;
 
     @ManyToOne
     @JoinColumn(name = "travel_id")
     private Travel travel;
+
+    private double allFees;
+
 
 }

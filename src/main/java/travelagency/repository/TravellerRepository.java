@@ -28,9 +28,6 @@ public class TravellerRepository {
                 Traveller.class).getResultList();
     }
 
-    public Traveller update(Traveller toUpdate) {
-        return entityManager.merge(toUpdate);
-    }
 
     public void delete(Traveller toDelete) {
         entityManager.remove(toDelete);

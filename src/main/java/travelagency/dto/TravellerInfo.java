@@ -3,6 +3,7 @@ package travelagency.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -11,8 +12,7 @@ public class TravellerInfo {
     private Integer id;
     private String Name;
     private String email;
-    private String accommodationNameAndType;
-    private Integer yearOfBirth;
+    private LocalDate birthday;
     private String travelCity;
     private double allFees;
 }

@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.*;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -19,9 +20,9 @@ public class TravellerCreateCommand {
     @NotNull
     @Min(1922)
     @Max(2022)
-    private Integer yearOfBirth;
+    private LocalDate birthday;
 
     @NotBlank(message = "Must be not blank!")
-    private String travelId;
+    private Integer travelId;
 
 }

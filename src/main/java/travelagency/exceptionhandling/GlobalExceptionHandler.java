@@ -39,4 +39,18 @@ public class GlobalExceptionHandler {
                 "no accommodation found with id");
         return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(ProgramNotFoundException.class)
+    public ResponseEntity<List<ValidationError>> handleProgramNotFoundException(ProgramNotFoundException exception) {
+        ValidationError validationError = new ValidationError("travelId",
+                "no accommodation found with id");
+        return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(TravellerNotFoundException.class)
+    public ResponseEntity<List<ValidationError>> handleTravellerNotFoundException(TravellerNotFoundException exception) {
+        ValidationError validationError = new ValidationError("travelId",
+                "no accommodation found with id");
+        return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
+    }
 }

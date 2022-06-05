@@ -13,8 +13,8 @@ public class DestinationRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public Optional<Destination> findByName(String name) {
-        return Optional.of(entityManager.createQuery(
-                "SELECT d FROM Destination d WHERE d.name = '" + name + "'", Destination.class).getSingleResult());
+    public Destination findByName(String name) {
+        return entityManager.createQuery(
+                "SELECT d FROM Destination d WHERE d.name = '" + name + "'", Destination.class).getSingleResult();
     }
 }
