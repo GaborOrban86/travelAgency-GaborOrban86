@@ -13,6 +13,6 @@ public class TravellerInfo {
     private String Name;
     private String email;
     private LocalDate birthday;
-    private String travelCity;
+    private Integer travelId;
     private double allFees;
 }

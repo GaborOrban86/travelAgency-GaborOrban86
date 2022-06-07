@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class TravelCreateCommand {
 
     @NotBlank(message = "Must be not blank!")
-    private String cityOfDestination;
+    private Integer destinationId;
 
     @NotBlank(message = "Must be not blank!")
     @Future

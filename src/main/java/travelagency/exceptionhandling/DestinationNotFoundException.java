@@ -1,13 +1,13 @@
 package travelagency.exceptionhandling;
 
 public class DestinationNotFoundException extends RuntimeException{
-    private final String destinationNotFound;
+    private final Integer destinationNotFound;
 
-    public DestinationNotFoundException(String destinationNotFound) {
+    public DestinationNotFoundException(Integer destinationNotFound) {
         this.destinationNotFound = destinationNotFound;
     }
 
-    public String getDestinationNotFound() {
+    public Integer getDestinationNotFound() {
         return destinationNotFound;
     }
 }

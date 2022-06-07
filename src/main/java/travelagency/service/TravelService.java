@@ -37,20 +37,21 @@ public class TravelService {
 
     public TravelInfo saveTravel(TravelCreateCommand command) {
         Travel toSave = new Travel();
-        Destination destinationForTravel = destinationRepository.findByName(command.getCityOfDestination());
+        Destination destinationForTravel = destinationRepository.findById(command.getDestinationId());
         if (destinationForTravel == null) {
-            throw new DestinationNotFoundException(command.getCityOfDestination());
+            throw new DestinationNotFoundException(command.getDestinationId());
         }
         toSave.setDestination(destinationForTravel);
 
         toSave.setStartDate(command.getStartDate());
         toSave.setEndDate(command.getEndDate());
-        toSave.setAccommodation(new Accommodation());
+//        toSave.setAccommodation(new Accommodation());
         toSave.setTravellers(new ArrayList<>());
         toSave.setPrograms(new ArrayList<>());
         toSave.setDays((int) DAYS.between(command.getStartDate(), command.getEndDate()));
         toSave.setWholePrice(toSave.getDestination().getPrice() * toSave.getDays());
 
+        System.out.println(toSave);
         Travel saved = travelRepository.save(toSave);
         return modelMapper.map(saved, TravelInfo.class);
     }

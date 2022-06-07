@@ -21,36 +21,44 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DestinationNotFoundException.class)
     public ResponseEntity<List<ValidationError>> handleDestinationNotFoundException(DestinationNotFoundException exception) {
-        ValidationError validationError = new ValidationError("destinationName",
-                "no destination found with name");
+        ValidationError validationError = new ValidationError("destinationId",
+                "no destination found with id:" + exception.getDestinationNotFound());
         return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(TravelNotFoundException.class)
     public ResponseEntity<List<ValidationError>> handleTravelNotFoundException(TravelNotFoundException exception) {
         ValidationError validationError = new ValidationError("travelId",
-                "no travel found with id");
+                "no travel found with id:" + exception.getIdNotFound());
         return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AccommodationNotFoundException.class)
     public ResponseEntity<List<ValidationError>> handleAccommodationNotFoundException(AccommodationNotFoundException exception) {
-        ValidationError validationError = new ValidationError("travelId",
-                "no accommodation found with id");
+        ValidationError validationError = new ValidationError("accommodationId",
+                "no accommodation found with id:" + exception.getIdNotFound());
+        return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AccommodationAlreadyExistsException.class)
+    public ResponseEntity<List<ValidationError>> handleAccommodationAlreadyExistsException(AccommodationAlreadyExistsException exception) {
+        ValidationError validationError = new ValidationError("accommodationId",
+                "accommodation found with id" + exception.getIdFound());
         return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ProgramNotFoundException.class)
     public ResponseEntity<List<ValidationError>> handleProgramNotFoundException(ProgramNotFoundException exception) {
-        ValidationError validationError = new ValidationError("travelId",
-                "no accommodation found with id");
+        ValidationError validationError = new ValidationError("programId",
+                "no program found with id:" + exception.getIdNotFound());
         return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(TravellerNotFoundException.class)
     public ResponseEntity<List<ValidationError>> handleTravellerNotFoundException(TravellerNotFoundException exception) {
-        ValidationError validationError = new ValidationError("travelId",
-                "no accommodation found with id");
+        ValidationError validationError = new ValidationError("travellerId",
+                "no traveller found with id:" + exception.getIdNotFound());
         return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
     }
+
 }

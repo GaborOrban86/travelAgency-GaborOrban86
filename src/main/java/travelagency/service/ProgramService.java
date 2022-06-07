@@ -93,6 +93,9 @@ public class ProgramService {
             throw new ProgramNotFoundException(id);
         }
 
+        Travel travelOfProgram = programFound.getTravel();
+        travelOfProgram.setWholePrice(
+                (travelOfProgram.getWholePrice() - programFound.getPrice()));
         programRepository.delete(programFound);
     }
 }

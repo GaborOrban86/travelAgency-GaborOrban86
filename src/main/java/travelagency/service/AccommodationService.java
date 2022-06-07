@@ -8,6 +8,7 @@ import travelagency.domain.Travel;
 import travelagency.dto.AccommodationCreateCommand;
 import travelagency.dto.AccommodationInfo;
 import travelagency.dto.AccommodationModifyCommand;
+import travelagency.exceptionhandling.AccommodationAlreadyExistsException;
 import travelagency.exceptionhandling.AccommodationNotFoundException;
 import travelagency.exceptionhandling.TravelNotFoundException;
 import travelagency.repository.AccommodationRepository;
@@ -38,8 +39,10 @@ public class AccommodationService {
         if (travelForAccommodation == null) {
             throw new TravelNotFoundException(command.getTravelId());
         }
-
-        toSave.setName(command.getName());
+        if (travelForAccommodation.getAccommodation() != null){
+            throw new AccommodationAlreadyExistsException(travelForAccommodation.getAccommodation().getId());
+        }
+            toSave.setName(command.getName());
         toSave.setType(command.getType());
         toSave.setCatering(command.getCatering());
         toSave.setPrice(command.getPrice());
@@ -50,6 +53,7 @@ public class AccommodationService {
 
         toSave.setTravel(travelForAccommodation);
         Accommodation saved = accommodationRepository.save(toSave);
+        travelForAccommodation.setAccommodation(saved);
         return modelMapper.map(saved, AccommodationInfo.class);
     }
 

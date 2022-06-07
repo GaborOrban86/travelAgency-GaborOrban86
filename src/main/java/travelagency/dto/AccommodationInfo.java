@@ -12,6 +12,6 @@ public class AccommodationInfo {
     private String name;
     private AccommodationType type;
     private Catering catering;
-    private String travelCity;
+    private Integer travelId;
     private double price;
 }
