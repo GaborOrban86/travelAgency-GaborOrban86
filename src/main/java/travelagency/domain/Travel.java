@@ -34,4 +34,6 @@ public class Travel {
 
     private Integer days;
     private Integer wholePrice;
+
+    private boolean deleted;
 }

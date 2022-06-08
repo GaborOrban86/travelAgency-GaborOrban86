@@ -22,4 +22,6 @@ public class Program {
     @ManyToOne
     @JoinColumn(name = "travel_id")
     private Travel travel;
+
+    private boolean deleted;
 }

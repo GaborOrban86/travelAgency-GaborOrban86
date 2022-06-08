@@ -9,6 +9,7 @@ import travelagency.dto.TravellerCreateCommand;
 import travelagency.dto.TravellerInfo;
 import travelagency.dto.TravellerModifyCommand;
 import travelagency.exceptionhandling.TravelNotFoundException;
+import travelagency.exceptionhandling.TravelWithoutAccommodationAndProgramsException;
 import travelagency.exceptionhandling.TravellerNotFoundException;
 import travelagency.repository.TravelRepository;
 import travelagency.repository.TravellerRepository;
@@ -39,7 +40,9 @@ public class TravellerService {
         if (travelForTraveller == null) {
             throw new TravelNotFoundException(command.getTravelId());
         }
-
+        if (travelForTraveller.getAccommodation() == null || travelForTraveller.getPrograms().isEmpty()) {
+            throw new TravelWithoutAccommodationAndProgramsException();
+        }
         toSave.setName(command.getName());
         toSave.setEmail(command.getEmail());
         toSave.setBirthday(command.getBirthday());
@@ -88,7 +91,9 @@ public class TravellerService {
         if (travellerFound == null) {
             throw new TravellerNotFoundException(id);
         }
-
+        Travel travelOfTraveller = travellerFound.getTravel();
+        travelOfTraveller.getTravellers().remove(travellerFound);
+        travellerFound.setTravel(null);
         travellerRepository.delete(travellerFound);
     }
 

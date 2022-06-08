@@ -1,5 +1,6 @@
 package travelagency.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,11 +14,14 @@ import java.time.LocalDate;
 public class TravelCreateCommand {
 
     @NotNull(message = "Must be not null!")
+    @Schema(description = "Destination ID", example = "2")
     private Integer destinationId;
 
-    @Future
+    @Future(message = "Must be a future date!")
+    @Schema(description = "Start date of travel", example = "2022-09-10")
     private LocalDate startDate;
 
-    @Future
+    @Future(message = "Must be a future date!")
+    @Schema(description = "End date of travel", example = "2022-09-12")
     private LocalDate endDate;
 }

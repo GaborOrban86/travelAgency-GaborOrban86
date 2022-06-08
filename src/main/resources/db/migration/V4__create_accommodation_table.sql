@@ -5,5 +5,6 @@ CREATE TABLE accommodation (
     catering integer,
     travel_id integer,
     price integer NOT NULL,
+    deleted boolean,
     PRIMARY KEY (id)
 );

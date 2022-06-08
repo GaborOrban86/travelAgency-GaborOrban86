@@ -6,5 +6,6 @@ CREATE TABLE travel (
     accommodation_id integer,
     destination_id integer,
     whole_price integer NOT NULL,
+    deleted boolean,
     PRIMARY KEY (id)
 );

@@ -22,7 +22,7 @@ public class ProgramController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProgramInfo save(@RequestBody ProgramCreateCommand command) {
+    public ProgramInfo save(@Valid @RequestBody ProgramCreateCommand command) {
         log.info("Http request, POST /api/programs, body: " + command.toString());
         return programService.saveProgram(command);
     }

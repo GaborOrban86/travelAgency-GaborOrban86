@@ -24,7 +24,7 @@ public class AccommodationController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public AccommodationInfo save(@RequestBody AccommodationCreateCommand command) {
+    public AccommodationInfo save(@Valid @RequestBody AccommodationCreateCommand command) {
         log.info("Http request, POST /api/accommodations, body: " + command.toString());
         return accommodationService.saveAccommodation(command);
     }

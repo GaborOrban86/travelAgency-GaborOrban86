@@ -24,7 +24,7 @@ public class TravellerController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TravellerInfo save(@RequestBody TravellerCreateCommand command) {
+    public TravellerInfo save(@Valid @RequestBody TravellerCreateCommand command) {
         log.info("Http request, POST /api/travellers, body: " + command.toString());
         return travellerService.saveTraveller(command);
     }

@@ -1,5 +1,6 @@
 package travelagency.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,9 +12,11 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class TravelModifyCommand {
 
-    @Future
+    @Future(message = "Must be a future date!")
+    @Schema(description = "Start date of travel", example = "2022-09-10")
     private LocalDate startDate;
 
-    @Future
+    @Future(message = "Must be a future date!")
+    @Schema(description = "End date of travel", example = "2022-09-12")
     private LocalDate endDate;
 }

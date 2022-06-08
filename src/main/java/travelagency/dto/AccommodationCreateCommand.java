@@ -1,10 +1,12 @@
 package travelagency.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import travelagency.domain.enums.AccommodationType;
-import travelagency.domain.enums.Catering;
-import travelagency.validation.EnumNamePattern;
+import travelagency.domain.enums.AccommodationCatering;
+import travelagency.validation.Catering;
+import travelagency.validation.Type;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -15,19 +17,25 @@ import javax.validation.constraints.Positive;
 public class AccommodationCreateCommand {
 
     @NotBlank(message = "Must be not blank!")
+    @Schema(description = "Accommodation name", example = "Hilton Hotel")
     private String name;
 
-    @EnumNamePattern(regexp = "SOLO|COUPLE|FAMILY",message = "Must be SOLO, COUPLE or FAMILY!")
-    private AccommodationType type;
+    @Type
+    @Schema(description = "Type of Accommodation", example = "SOLO")
+    private String type;
 
-    @EnumNamePattern(regexp = "FULL|HALF|NOTHING",message = "Must be FULL, HALF or NOTHING!")
-    private Catering catering;
+    @Catering
+    @Schema(description = "Catering of Accommodation", example = "FULL")
+    private String catering;
 
     @NotNull(message = "Must be not null!")
     @Positive(message = "Must be a positive number!")
+    @Schema(description = "ID of travel", example = "1")
     private Integer travelId;
 
-    @NotBlank(message = "Must be not blank!")
+    @NotNull(message = "Must be not null!")
+    @Positive(message = "Must be a positive number!")
+    @Schema(description = "Price of travel", example = "35000")
     private Integer price;
 
 }

@@ -33,7 +33,7 @@ public class AccommodationRepository {
     }
 
     public void delete(Accommodation toDelete) {
-        entityManager.remove(toDelete);
+        toDelete.setDeleted(true);
     }
 
 

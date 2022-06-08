@@ -30,6 +30,6 @@ public class TravelRepository {
     }
 
     public void delete(Travel toDelete) {
-        entityManager.remove(toDelete);
+        toDelete.setDeleted(true);
     }
 }

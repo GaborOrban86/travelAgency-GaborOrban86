@@ -26,5 +26,7 @@ public class Traveller {
 
     private Integer allFees;
 
+    private boolean deleted;
+
 
 }

@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import travelagency.domain.Accommodation;
 import travelagency.domain.Travel;
+import travelagency.domain.Traveller;
+import travelagency.domain.enums.AccommodationCatering;
+import travelagency.domain.enums.AccommodationType;
 import travelagency.dto.AccommodationCreateCommand;
 import travelagency.dto.AccommodationInfo;
 import travelagency.dto.AccommodationModifyCommand;
@@ -43,8 +46,8 @@ public class AccommodationService {
             throw new AccommodationAlreadyExistsException(travelForAccommodation.getAccommodation().getId());
         }
             toSave.setName(command.getName());
-        toSave.setType(command.getType());
-        toSave.setCatering(command.getCatering());
+        toSave.setType(AccommodationType.valueOf(command.getType()));
+        toSave.setCatering(AccommodationCatering.valueOf(command.getCatering()));
         toSave.setPrice(command.getPrice());
 
 
@@ -83,8 +86,8 @@ public class AccommodationService {
                         (command.getPrice() * travelOfAccommodation.getDays()));
 
         toModify.setName(command.getName());
-        toModify.setType(command.getType());
-        toModify.setCatering(command.getCatering());
+        toModify.setType(AccommodationType.valueOf(command.getType()));
+        toModify.setCatering(AccommodationCatering.valueOf(command.getCatering()));
         toModify.setPrice(command.getPrice());
 
         return modelMapper.map(toModify, AccommodationInfo.class);
@@ -95,7 +98,12 @@ public class AccommodationService {
         if (accommodationFound == null) {
             throw new AccommodationNotFoundException(id);
         }
-
+        Travel travelOfAccommodation = accommodationFound.getTravel();
+        Integer allDaysAccommodationPrice = accommodationFound.getPrice()*travelOfAccommodation.getDays();
+        travelOfAccommodation.setWholePrice(travelOfAccommodation.getWholePrice()
+                - allDaysAccommodationPrice);
+        travelOfAccommodation.setAccommodation(null);
+        accommodationFound.setTravel(null);
         accommodationRepository.delete(accommodationFound);
     }
 }

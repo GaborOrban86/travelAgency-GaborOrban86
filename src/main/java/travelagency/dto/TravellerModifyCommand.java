@@ -1,5 +1,6 @@
 package travelagency.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,9 +12,10 @@ import javax.validation.constraints.NotBlank;
 public class TravellerModifyCommand {
 
     @NotBlank(message = "Must be not blank!")
+    @Schema(description = "Traveller name", example = "Tim Travel")
     private String Name;
 
-    @NotBlank(message = "Must be not blank!")
-    @Email
+    @Email(message = "Must be a valid email format")
+    @Schema(description = "Traveller email", example = "traveller@travel.com")
     private String email;
 }

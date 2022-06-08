@@ -24,7 +24,7 @@ public class TravelController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TravelInfo save(@RequestBody TravelCreateCommand command) {
+    public TravelInfo save(@Valid @RequestBody TravelCreateCommand command) {
         log.info("Http request, POST /api/travels, body: " + command.toString());
         return travelService.saveTravel(command);
     }

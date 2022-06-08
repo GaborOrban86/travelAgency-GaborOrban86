@@ -5,5 +5,6 @@ CREATE TABLE program (
     guide varchar(255),
     price integer NOT NULL,
     travel_id integer,
+    deleted boolean,
     PRIMARY KEY (id)
 );

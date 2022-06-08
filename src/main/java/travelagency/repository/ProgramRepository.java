@@ -33,6 +33,6 @@ public class ProgramRepository {
     }
 
     public void delete(Program toDelete) {
-        entityManager.remove(toDelete);
+        toDelete.setDeleted(true);
     }
 }

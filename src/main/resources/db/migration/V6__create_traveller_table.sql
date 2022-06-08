@@ -6,5 +6,6 @@ CREATE TABLE traveller (
     age bigint NOT NULL,
     travel_id integer,
     all_fees integer NOT NULL,
+    deleted boolean,
     PRIMARY KEY (id)
 );
