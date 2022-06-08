@@ -13,5 +13,5 @@ public class AccommodationInfo {
     private AccommodationType type;
     private Catering catering;
     private Integer travelId;
-    private double price;
+    private Integer price;
 }

@@ -13,16 +13,13 @@ public class TravellerCreateCommand {
     @NotBlank(message = "Must be not blank!")
     private String Name;
 
-    @NotBlank(message = "Must be not blank!")
     @Email
     private String email;
 
-    @NotNull
-    @Min(1922)
-    @Max(2022)
+    @Past
     private LocalDate birthday;
 
-    @NotBlank(message = "Must be not blank!")
+    @NotNull(message = "Must be not null!")
     private Integer travelId;
 
 }

@@ -11,6 +11,6 @@ public class ProgramInfo {
     private Integer id;
     private String name;
     private String description;
-    private double price;
     private String guide;
+    private Integer price;
 }

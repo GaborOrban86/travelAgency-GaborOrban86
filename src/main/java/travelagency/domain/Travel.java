@@ -33,5 +33,5 @@ public class Travel {
     private List<Program> programs;
 
     private Integer days;
-    private double wholePrice;
+    private Integer wholePrice;
 }

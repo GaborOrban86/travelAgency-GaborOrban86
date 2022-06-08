@@ -92,7 +92,8 @@ public class TravellerService {
         travellerRepository.delete(travellerFound);
     }
 
-    public double travellerFeesSetter(long age, double wholePrice) {
+    //TODO
+    public int travellerFeesSetter(long age, int wholePrice) {
         double result = wholePrice;
         if (age <= 4) {
             result = 0;
@@ -100,6 +101,6 @@ public class TravellerService {
             result = wholePrice * 0.5;
         }
 
-        return result;
+        return (int) result;
     }
 }

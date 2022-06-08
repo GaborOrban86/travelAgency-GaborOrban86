@@ -10,11 +10,10 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 public class TravelModifyCommand {
-    @NotBlank(message = "Must be not blank!")
+
     @Future
     private LocalDate startDate;
 
-    @NotBlank(message = "Must be not blank!")
     @Future
     private LocalDate endDate;
 }

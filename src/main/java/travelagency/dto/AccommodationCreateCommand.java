@@ -4,8 +4,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import travelagency.domain.enums.AccommodationType;
 import travelagency.domain.enums.Catering;
+import travelagency.validation.EnumNamePattern;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 @Data
 @NoArgsConstructor
@@ -14,15 +17,17 @@ public class AccommodationCreateCommand {
     @NotBlank(message = "Must be not blank!")
     private String name;
 
-    @NotBlank(message = "Must be not blank!")
+    @EnumNamePattern(regexp = "SOLO|COUPLE|FAMILY",message = "Must be SOLO, COUPLE or FAMILY!")
     private AccommodationType type;
 
-    @NotBlank(message = "Must be not blank!")
+    @EnumNamePattern(regexp = "FULL|HALF|NOTHING",message = "Must be FULL, HALF or NOTHING!")
     private Catering catering;
 
-    @NotBlank(message = "Must be not blank!")
-    private double price;
+    @NotNull(message = "Must be not null!")
+    @Positive(message = "Must be a positive number!")
+    private Integer travelId;
 
     @NotBlank(message = "Must be not blank!")
-    private Integer travelId;
+    private Integer price;
+
 }

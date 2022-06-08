@@ -14,5 +14,5 @@ public class TravellerInfo {
     private String email;
     private LocalDate birthday;
     private Integer travelId;
-    private double allFees;
+    private Integer allFees;
 }

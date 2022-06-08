@@ -16,8 +16,8 @@ public class Program {
 
     private String name;
     private String description;
-    private double price;
     private String guide;
+    private Integer price;
 
     @ManyToOne
     @JoinColumn(name = "travel_id")

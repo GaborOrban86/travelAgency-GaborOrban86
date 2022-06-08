@@ -5,21 +5,19 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 public class TravelCreateCommand {
 
-    @NotBlank(message = "Must be not blank!")
+    @NotNull(message = "Must be not null!")
     private Integer destinationId;
 
-    @NotBlank(message = "Must be not blank!")
     @Future
     private LocalDate startDate;
 
-    @NotBlank(message = "Must be not blank!")
     @Future
     private LocalDate endDate;
 }

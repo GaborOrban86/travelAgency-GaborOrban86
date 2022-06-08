@@ -24,5 +24,5 @@ public class Accommodation {
     @JoinColumn(name = "travel_id")
     private Travel travel;
 
-    private double price;
+    private Integer price;
 }

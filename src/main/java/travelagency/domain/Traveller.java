@@ -24,7 +24,7 @@ public class Traveller {
     @JoinColumn(name = "travel_id")
     private Travel travel;
 
-    private double allFees;
+    private Integer allFees;
 
 
 }

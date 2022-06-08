@@ -4,9 +4,7 @@ package travelagency.service;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import travelagency.domain.Accommodation;
-import travelagency.domain.Destination;
-import travelagency.domain.Travel;
+import travelagency.domain.*;
 import travelagency.dto.TravelCreateCommand;
 import travelagency.dto.TravelInfo;
 import travelagency.dto.TravelModifyCommand;
@@ -89,6 +87,24 @@ public class TravelService {
         if (travelFound == null) {
             throw new TravelNotFoundException(id);
         }
+        Accommodation accommodationOfTravel = travelFound.getAccommodation();
+        List<Program> programsOfTravel = travelFound.getPrograms();
+        List<Traveller> travelleresOfTravel = travelFound.getTravellers();
+
+        for (Program program : programsOfTravel) {
+            program.setTravel(null);
+        }
+
+        for (Traveller traveller : travelleresOfTravel) {
+            traveller.setTravel(null);
+        }
+
+        accommodationOfTravel.setTravel(null);
+
+        travelFound.setAccommodation(null);
+        travelFound.setTravellers(null);
+        travelFound.setPrograms(null);
+
         travelRepository.delete(travelFound);
     }
 }
