@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class CateringValidator implements ConstraintValidator<travelagency.validation.Catering, String> {
+public class CateringValidator implements ConstraintValidator<Catering, String> {
     private final List<String> validValues = Stream.of(AccommodationCatering.values())
             .map(Enum::name)
             .collect(Collectors.toList());
 
     @Override
-    public void initialize(travelagency.validation.Catering constraintAnnotation) {
+    public void initialize(Catering constraintAnnotation) {
         ConstraintValidator.super.initialize(constraintAnnotation);
     }
 

@@ -70,6 +70,7 @@ public class TravellerService {
     public List<TravellerInfo> findAllTravellers() {
         List<Traveller> travellers = travellerRepository.findAll();
         return travellers.stream()
+                .filter(traveller -> !traveller.isDeleted())
                 .map(traveller -> modelMapper.map(traveller, TravellerInfo.class))
                 .collect(Collectors.toList());
     }

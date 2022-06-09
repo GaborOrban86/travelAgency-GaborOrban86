@@ -66,6 +66,7 @@ public class ProgramService {
     public List<ProgramInfo> findAllPrograms() {
         List<Program> programs = programRepository.findAll();
         return programs.stream()
+                .filter(program -> !program.isDeleted())
                 .map(program -> modelMapper.map(program, ProgramInfo.class))
                 .collect(Collectors.toList());
     }

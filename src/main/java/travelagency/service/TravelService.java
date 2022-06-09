@@ -65,6 +65,7 @@ public class TravelService {
     public List<TravelInfo> findAllTravels() {
         List<Travel> travels = travelRepository.findAll();
         return travels.stream()
+                .filter(travel -> !travel.isDeleted())
                 .map(travel -> modelMapper.map(travel, TravelInfo.class))
                 .collect(Collectors.toList());
     }
@@ -76,8 +77,18 @@ public class TravelService {
         }
         travelFound.setStartDate(command.getStartDate());
         travelFound.setEndDate(command.getEndDate());
+
+        int programPricesOfFoundTravel = 0;
+
+        for (Program program : travelFound.getPrograms()) {
+            programPricesOfFoundTravel = programPricesOfFoundTravel + program.getPrice();
+        }
+
         int newDays = ((int) DAYS.between(command.getStartDate(), command.getEndDate()));
-        travelFound.setWholePrice(travelFound.getWholePrice() / travelFound.getDays() * newDays);
+
+        travelFound.setWholePrice(((travelFound.getWholePrice() - programPricesOfFoundTravel)
+                / travelFound.getDays() * newDays) + programPricesOfFoundTravel);
+
         travelFound.setDays(newDays);
         return modelMapper.map(travelFound, TravelInfo.class);
     }

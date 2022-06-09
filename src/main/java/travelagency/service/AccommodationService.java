@@ -71,6 +71,7 @@ public class AccommodationService {
     public List<AccommodationInfo> findAllAccommodations() {
         List<Accommodation> accommodations = accommodationRepository.findAll();
         return accommodations.stream()
+                .filter(accommodation -> !accommodation.isDeleted())
                 .map(accommodation -> modelMapper.map(accommodation, AccommodationInfo.class))
                 .collect(Collectors.toList());
     }
