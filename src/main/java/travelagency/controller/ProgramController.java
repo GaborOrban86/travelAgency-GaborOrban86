@@ -40,7 +40,7 @@ public class ProgramController {
         return programService.findAllPrograms();
     }
 
-    @PostMapping("/{programId}")
+    @PutMapping("/{programId}")
     @ResponseStatus(HttpStatus.OK)
     public ProgramInfo modifyProgram(@PathVariable("programId") Integer programId,
                                                  @RequestBody @Valid ProgramModifyCommand updateCommand) {

@@ -28,10 +28,6 @@ public class AccommodationRepository {
                 Accommodation.class).getResultList();
     }
 
-    public Accommodation update(Accommodation toUpdate) {
-        return entityManager.merge(toUpdate);
-    }
-
     public void delete(Accommodation toDelete) {
         toDelete.setDeleted(true);
     }

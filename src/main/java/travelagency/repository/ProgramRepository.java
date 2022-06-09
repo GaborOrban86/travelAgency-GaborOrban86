@@ -28,10 +28,6 @@ public class ProgramRepository {
                 Program.class).getResultList();
     }
 
-    public Program update(Program toUpdate) {
-        return entityManager.merge(toUpdate);
-    }
-
     public void delete(Program toDelete) {
         toDelete.setDeleted(true);
     }

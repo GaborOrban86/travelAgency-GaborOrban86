@@ -42,7 +42,7 @@ public class TravelController {
         return travelService.findAllTravels();
     }
 
-    @PostMapping("/{travelId}")
+    @PutMapping("/{travelId}")
     @ResponseStatus(HttpStatus.OK)
     public TravelInfo modifyTravel(@PathVariable("travelId") Integer travelId,
                                          @RequestBody @Valid TravelModifyCommand updateCommand) {

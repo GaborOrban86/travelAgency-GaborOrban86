@@ -42,7 +42,7 @@ public class AccommodationController {
         return accommodationService.findAllAccommodations();
     }
 
-    @PostMapping("/{accommodationId}")
+    @PutMapping("/{accommodationId}")
     @ResponseStatus(HttpStatus.OK)
     public AccommodationInfo modifyAccommodation(@PathVariable("accommodationId") Integer accommodationId,
                                                  @RequestBody @Valid AccommodationModifyCommand updateCommand) {
