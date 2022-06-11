@@ -12,7 +12,7 @@
     </parent>
 
     <groupId>hu.progmasters</groupId>
-    <artifactId>vizsgaremek-GaborOrban86</artifactId>
+    <artifactId>travel-app</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>

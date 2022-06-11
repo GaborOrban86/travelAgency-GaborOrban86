@@ -1,6 +1,7 @@
 package travelagency.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import travelagency.domain.enums.AccommodationType;
@@ -14,6 +15,7 @@ import javax.validation.constraints.Positive;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class AccommodationModifyCommand {
     @NotBlank(message = "Must be not blank!")
     @Schema(description = "Accommodation name", example = "Hilton Hotel")

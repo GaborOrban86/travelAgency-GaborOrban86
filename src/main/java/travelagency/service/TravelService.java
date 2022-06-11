@@ -109,7 +109,6 @@ public class TravelService {
             traveller.setTravel(null);
         }
 
-        accommodationOfTravel.setTravel(null);
 
         travelFound.setAccommodation(null);
         travelFound.setTravellers(null);
