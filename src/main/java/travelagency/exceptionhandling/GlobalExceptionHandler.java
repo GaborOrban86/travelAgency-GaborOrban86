@@ -3,7 +3,6 @@ package travelagency.exceptionhandling;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -14,7 +13,8 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<List<ValidationError>> handleValidationException(MethodArgumentNotValidException exception) {
+    public ResponseEntity<List<ValidationError>> handleValidationException(
+            MethodArgumentNotValidException exception) {
         List<ValidationError> validationErrors = exception.getBindingResult().getFieldErrors()
                 .stream()
                 .map(fieldError -> new ValidationError(fieldError.getField(), fieldError.getDefaultMessage()))
@@ -24,7 +24,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(DestinationNotFoundException.class)
-    public ResponseEntity<List<ValidationError>> handleDestinationNotFoundException(DestinationNotFoundException exception) {
+    public ResponseEntity<List<ValidationError>> handleDestinationNotFoundException(
+            DestinationNotFoundException exception) {
         ValidationError validationError = new ValidationError("destinationId",
                 "no destination found with id:" + exception.getDestinationNotFound());
         return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
@@ -38,16 +39,18 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AccommodationNotFoundException.class)
-    public ResponseEntity<List<ValidationError>> handleAccommodationNotFoundException(AccommodationNotFoundException exception) {
+    public ResponseEntity<List<ValidationError>> handleAccommodationNotFoundException(
+            AccommodationNotFoundException exception) {
         ValidationError validationError = new ValidationError("accommodationId",
                 "no accommodation found with id:" + exception.getIdNotFound());
         return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AccommodationAlreadyExistsException.class)
-    public ResponseEntity<List<ValidationError>> handleAccommodationAlreadyExistsException(AccommodationAlreadyExistsException exception) {
+    public ResponseEntity<List<ValidationError>> handleAccommodationAlreadyExistsException(
+            AccommodationAlreadyExistsException exception) {
         ValidationError validationError = new ValidationError("accommodationId",
-                "accommodation found with id" + exception.getIdFound());
+                "this travel has an accommodation with id:" + exception.getIdFound());
         return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
     }
 
@@ -59,16 +62,27 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(TravellerNotFoundException.class)
-    public ResponseEntity<List<ValidationError>> handleTravellerNotFoundException(TravellerNotFoundException exception) {
+    public ResponseEntity<List<ValidationError>> handleTravellerNotFoundException(
+            TravellerNotFoundException exception) {
         ValidationError validationError = new ValidationError("travellerId",
                 "no traveller found with id:" + exception.getIdNotFound());
         return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(TravelWithoutAccommodationAndProgramsException.class)
-    public ResponseEntity<List<ValidationError>> handleTravelWithoutAccommodationAndProgramsException(TravelWithoutAccommodationAndProgramsException exception) {
-        ValidationError validationError = new ValidationError("travelId",
+    public ResponseEntity<List<ValidationError>> handleTravelWithoutAccommodationAndProgramsException(
+            TravelWithoutAccommodationAndProgramsException exception) {
+        ValidationError validationError = new ValidationError("travel",
                 "You need to put accommodation and programs first into the travel");
+        return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(TravelWithTravellersException.class)
+    public ResponseEntity<List<ValidationError>> handleTravelWithTravellersException(
+            TravelWithTravellersException exception) {
+        ValidationError validationError = new ValidationError("travel",
+                "You can't put, modify or delete accommodation or program if you already put travellers " +
+                        "into the travel");
         return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
     }
 }

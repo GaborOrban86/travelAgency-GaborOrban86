@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import travelagency.domain.Accommodation;
 import travelagency.domain.Travel;
-import travelagency.domain.Traveller;
 import travelagency.domain.enums.AccommodationCatering;
 import travelagency.domain.enums.AccommodationType;
 import travelagency.dto.AccommodationCreateCommand;
@@ -14,6 +13,7 @@ import travelagency.dto.AccommodationModifyCommand;
 import travelagency.exceptionhandling.AccommodationAlreadyExistsException;
 import travelagency.exceptionhandling.AccommodationNotFoundException;
 import travelagency.exceptionhandling.TravelNotFoundException;
+import travelagency.exceptionhandling.TravelWithTravellersException;
 import travelagency.repository.AccommodationRepository;
 import travelagency.repository.TravelRepository;
 
@@ -42,10 +42,11 @@ public class AccommodationService {
         if (travelForAccommodation == null) {
             throw new TravelNotFoundException(command.getTravelId());
         }
-        if (travelForAccommodation.getAccommodation() != null){
+        if (travelForAccommodation.getAccommodation() != null) {
             throw new AccommodationAlreadyExistsException(travelForAccommodation.getAccommodation().getId());
         }
-            toSave.setName(command.getName());
+
+        toSave.setName(command.getName());
         toSave.setType(AccommodationType.valueOf(command.getType()));
         toSave.setCatering(AccommodationCatering.valueOf(command.getCatering()));
         toSave.setPrice(command.getPrice());
@@ -62,7 +63,7 @@ public class AccommodationService {
 
     public AccommodationInfo findAccommodationById(Integer id) {
         Accommodation accommodationFound = accommodationRepository.findById(id);
-        if (accommodationFound == null) {
+        if (accommodationFound == null || accommodationFound.isDeleted()) {
             throw new AccommodationNotFoundException(id);
         }
         return modelMapper.map(accommodationFound, AccommodationInfo.class);
@@ -82,6 +83,9 @@ public class AccommodationService {
             throw new AccommodationNotFoundException(id);
         }
         Travel travelOfAccommodation = toModify.getTravel();
+        if (!travelOfAccommodation.getTravellers().isEmpty()) {
+            throw new TravelWithTravellersException();
+        }
         travelOfAccommodation.setWholePrice(
                 (travelOfAccommodation.getWholePrice() - (toModify.getPrice() * travelOfAccommodation.getDays())) +
                         (command.getPrice() * travelOfAccommodation.getDays()));
@@ -96,13 +100,16 @@ public class AccommodationService {
 
     public void deleteAccommodation(int id) {
         Accommodation accommodationFound = accommodationRepository.findById(id);
-        if (accommodationFound == null) {
+        if (accommodationFound == null || accommodationFound.isDeleted()) {
             throw new AccommodationNotFoundException(id);
         }
         Travel travelOfAccommodation = accommodationFound.getTravel();
-        Integer allDaysAccommodationPrice = accommodationFound.getPrice()*travelOfAccommodation.getDays();
-        travelOfAccommodation.setWholePrice(travelOfAccommodation.getWholePrice()
-                - allDaysAccommodationPrice);
+        if (!travelOfAccommodation.getTravellers().isEmpty()) {
+            throw new TravelWithTravellersException();
+        }
+
+        Integer allDaysAccommodationPrice = accommodationFound.getPrice() * travelOfAccommodation.getDays();
+        travelOfAccommodation.setWholePrice(travelOfAccommodation.getWholePrice() - allDaysAccommodationPrice);
         travelOfAccommodation.setAccommodation(null);
         accommodationFound.setTravel(null);
         accommodationRepository.delete(accommodationFound);

@@ -1,6 +1,7 @@
 package travelagency.service;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import travelagency.domain.Travel;
@@ -16,7 +17,9 @@ import travelagency.repository.TravellerRepository;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +28,12 @@ public class TravellerService {
     private final TravellerRepository travellerRepository;
     private final TravelRepository travelRepository;
     private final ModelMapper modelMapper;
+
+    @Value("${discount.baby}")
+    private Float babyDiscount;
+
+    @Value("${discount.child}")
+    private Float childDiscount;
 
     public TravellerService(TravellerRepository travellerRepository, TravelRepository travelRepository, ModelMapper modelMapper) {
         this.travellerRepository = travellerRepository;
@@ -61,7 +70,7 @@ public class TravellerService {
 
     public TravellerInfo findTravellerById(Integer id) {
         Traveller travellerFound = travellerRepository.findById(id);
-        if (travellerFound == null) {
+        if (travellerFound == null || travellerFound.isDeleted()) {
             throw new TravellerNotFoundException(id);
         }
         return modelMapper.map(travellerFound, TravellerInfo.class);
@@ -89,22 +98,23 @@ public class TravellerService {
 
     public void deleteTraveller(int id) {
         Traveller travellerFound = travellerRepository.findById(id);
-        if (travellerFound == null) {
+        if (travellerFound == null || travellerFound.isDeleted()) {
             throw new TravellerNotFoundException(id);
         }
         Travel travelOfTraveller = travellerFound.getTravel();
         travelOfTraveller.getTravellers().remove(travellerFound);
         travellerFound.setTravel(null);
+        travellerFound.setAllFees(0);
         travellerRepository.delete(travellerFound);
     }
 
-    //TODO
+
     public int travellerFeesSetter(long age, int wholePrice) {
         double result = wholePrice;
         if (age <= 4) {
-            result = 0;
+            result = wholePrice * babyDiscount;
         } else if (age <= 12) {
-            result = wholePrice * 0.5;
+            result = wholePrice * childDiscount;
         }
 
         return (int) result;

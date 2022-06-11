@@ -10,6 +10,7 @@ import travelagency.dto.ProgramInfo;
 import travelagency.dto.ProgramModifyCommand;
 import travelagency.exceptionhandling.ProgramNotFoundException;
 import travelagency.exceptionhandling.TravelNotFoundException;
+import travelagency.exceptionhandling.TravelWithTravellersException;
 import travelagency.repository.ProgramRepository;
 import travelagency.repository.TravelRepository;
 
@@ -39,6 +40,11 @@ public class ProgramService {
             throw new TravelNotFoundException(command.getTravelId());
         }
 
+        if (!travelForProgram.getTravellers().isEmpty()) {
+            throw new TravelWithTravellersException();
+        }
+
+
         toSave.setName(command.getName());
         toSave.setDescription(command.getDescription());
         toSave.setPrice(command.getPrice());
@@ -57,7 +63,7 @@ public class ProgramService {
 
     public ProgramInfo findProgramById(Integer id) {
         Program programFound = programRepository.findById(id);
-        if (programFound == null) {
+        if (programFound == null || programFound.isDeleted()) {
             throw new ProgramNotFoundException(id);
         }
         return modelMapper.map(programFound, ProgramInfo.class);
@@ -73,10 +79,15 @@ public class ProgramService {
 
     public ProgramInfo modifyProgram(Integer id, ProgramModifyCommand command) {
         Program toModify = programRepository.findById(id);
-        if (toModify == null) {
+        if (toModify == null || toModify.isDeleted()) {
             throw new ProgramNotFoundException(id);
         }
         Travel travelOfProgram = toModify.getTravel();
+
+        if (!travelOfProgram.getTravellers().isEmpty()) {
+            throw new TravelWithTravellersException();
+        }
+
         travelOfProgram.setWholePrice(
                 (travelOfProgram.getWholePrice() - toModify.getPrice() + command.getPrice()));
 
@@ -90,11 +101,16 @@ public class ProgramService {
 
     public void deleteProgram(int id) {
         Program programFound = programRepository.findById(id);
-        if (programFound == null) {
+        if (programFound == null || programFound.isDeleted()) {
             throw new ProgramNotFoundException(id);
         }
 
         Travel travelOfProgram = programFound.getTravel();
+
+        if (!travelOfProgram.getTravellers().isEmpty()) {
+            throw new TravelWithTravellersException();
+        }
+
         travelOfProgram.setWholePrice(
                 (travelOfProgram.getWholePrice() - programFound.getPrice()));
         travelOfProgram.getPrograms().remove(programFound);

@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "logging.discount",
+      "type": "java.lang.String",
+      "description": "Description for logging.discount."
+  }
+] }

@@ -3,6 +3,7 @@ spring:
     url: jdbc:mysql://127.0.0.1:3311/travelagency?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true
     username: root
     password: 1234
+
   jpa:
     hibernate:
       ddl-auto: validate
@@ -10,7 +11,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
     show-sql: on
-logging:
-  level:
-    org:
-      flywaydb: debug
+
+discount:
+  baby: 0.0
+  child: 0.5

@@ -43,7 +43,6 @@ public class TravelService {
 
         toSave.setStartDate(command.getStartDate());
         toSave.setEndDate(command.getEndDate());
-//        toSave.setAccommodation(new Accommodation());
         toSave.setTravellers(new ArrayList<>());
         toSave.setPrograms(new ArrayList<>());
         toSave.setDays((int) DAYS.between(command.getStartDate(), command.getEndDate()));
@@ -56,7 +55,7 @@ public class TravelService {
 
     public TravelInfo findTravelById(Integer id) {
         Travel travelFound = travelRepository.findById(id);
-        if (travelFound == null) {
+        if (travelFound == null || travelFound.isDeleted()) {
             throw new TravelNotFoundException(id);
         }
         return modelMapper.map(travelFound, TravelInfo.class);
@@ -95,7 +94,7 @@ public class TravelService {
 
     public void deleteTravel(int id) {
         Travel travelFound = travelRepository.findById(id);
-        if (travelFound == null) {
+        if (travelFound == null || travelFound.isDeleted()) {
             throw new TravelNotFoundException(id);
         }
         Accommodation accommodationOfTravel = travelFound.getAccommodation();

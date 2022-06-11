@@ -13,7 +13,7 @@ public class TravellerCreateCommand {
 
     @NotBlank(message = "Must be not blank!")
     @Schema(description = "Traveller name", example = "Tim Travel")
-    private String Name;
+    private String name;
 
     @Email(message = "Must be a valid email format")
     @Schema(description = "Traveller email", example = "traveller@travel.com")
