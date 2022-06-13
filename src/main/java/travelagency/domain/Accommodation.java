@@ -2,8 +2,8 @@ package travelagency.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import travelagency.domain.enums.AccommodationType;
 import travelagency.domain.enums.AccommodationCatering;
+import travelagency.domain.enums.AccommodationType;
 
 import javax.persistence.*;
 
@@ -11,7 +11,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 public class Accommodation {
-
 
 
     @Id

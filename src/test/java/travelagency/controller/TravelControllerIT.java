@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import travelagency.dto.TravelCreateCommand;
@@ -21,14 +20,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+
 public class TravelControllerIT {
 
-    @Autowired
-    TestRestTemplate restTemplate;
 
     @Autowired
     TravelController travelController;
@@ -37,19 +34,8 @@ public class TravelControllerIT {
     MockMvc mockMvc;
 
     @Test
-    void testGetTravelByIdAndSave_OneTravel_Success() {
-        restTemplate.postForObject("/api/travels",
-                new TravelCreateCommand(2, LocalDate.of(2022, Month.SEPTEMBER, 10),
-                        LocalDate.of(2022, Month.SEPTEMBER, 12)), TravelInfo.class);
-
-        TravelInfo travelInfo = restTemplate.getForObject("/api/travels/1", TravelInfo.class);
-        assertThat(travelInfo)
-                .extracting(TravelInfo::getDays)
-                .isEqualTo(2);
-    }
-
-    @Test
     void testGetTravelById_BADREQUEST() throws Exception {
+
         mockMvc.perform(get("/api/travels/10"))
                 .andExpect(status().isBadRequest());
     }
@@ -67,6 +53,7 @@ public class TravelControllerIT {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     void TestModifyTravel_Success() {
         travelController.save(new TravelCreateCommand(2, LocalDate.of(2022,
                 Month.SEPTEMBER, 10), LocalDate.of(2022, Month.SEPTEMBER, 12)));

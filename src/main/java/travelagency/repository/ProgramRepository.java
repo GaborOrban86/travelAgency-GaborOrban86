@@ -1,7 +1,6 @@
 package travelagency.repository;
 
 import org.springframework.stereotype.Repository;
-import travelagency.domain.Accommodation;
 import travelagency.domain.Program;
 
 import javax.persistence.EntityManager;

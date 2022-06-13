@@ -2,39 +2,28 @@ package travelagency.controller;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.web.servlet.MockMvc;
 import travelagency.dto.*;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.List;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
 @AutoConfigureTestDatabase
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class AccommodationControllerIT {
 
     @Autowired
     TestRestTemplate restTemplate;
-
-    @Autowired
-    AccommodationController accommodationController;
-
-    @Autowired
-    MockMvc mockMvc;
 
     @BeforeEach
     void putTravel() {
@@ -56,45 +45,39 @@ public class AccommodationControllerIT {
     }
 
     @Test
-    void putNewAccommodation_BADREQUEST() throws Exception {
-
-        accommodationController.save(new AccommodationCreateCommand(
-                "Hilton", "SOLO", "FULL", 1, 10000));
-
-        mockMvc.perform(post("/api/accommodations", new AccommodationCreateCommand(
-                        "Hilton", "SOLO", "FULL", 1, 10000)))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
     void testModifyAccommodation_SUCCESS() {
-        accommodationController.save(new AccommodationCreateCommand(
-                "Hilton", "SOLO", "FULL", 1, 10000));
+        restTemplate.postForObject("/api/accommodations", new AccommodationCreateCommand(
+                "Hilton", "SOLO", "FULL", 1, 10000), AccommodationCreateCommand.class);
 
-        AccommodationInfo modified = accommodationController.modifyAccommodation(1,
-                new AccommodationModifyCommand("Bubu Hotel", "FAMILY", "FULL", 5000));
+        restTemplate.put("/api/accommodations/1",
+                new AccommodationModifyCommand("Bubu Hotel", "FAMILY", "FULL", 5000),
+                AccommodationModifyCommand.class);
+
+        AccommodationInfo modified = restTemplate.getForObject("/api/accommodations/1", AccommodationInfo.class);
         assertThat(modified)
                 .extracting(AccommodationInfo::getName)
                 .isEqualTo("Bubu Hotel");
-
-    }
-
-    @Test
-    void testFindAllStatus_OK() throws Exception {
-        mockMvc.perform(get("/api/accommodations"))
-                .andExpect(status().isOk());
     }
 
     @Test
     void testDelete() {
-        accommodationController.save(new AccommodationCreateCommand(
-                "Hilton", "SOLO", "FULL", 1, 10000));
-        int sizeBeforeDelete = accommodationController.findAll().size();
+        restTemplate.postForObject("/api/accommodations", new AccommodationCreateCommand(
+                "Hilton", "SOLO", "FULL", 1, 10000), AccommodationCreateCommand.class);
+
+        ResponseEntity<AccommodationInfo[]> response =
+                restTemplate.getForEntity("/api/accommodations", AccommodationInfo[].class);
+        List<AccommodationInfo> accommodationInfos = List.of(Objects.requireNonNull(response.getBody()));
+
+        int sizeBeforeDelete = accommodationInfos.size();
         assertThat(sizeBeforeDelete).isEqualTo(1);
 
-        accommodationController.deleteAccommodation(1);
+        restTemplate.delete("/api/accommodations/1");
 
-        int sizeAfterDelete = accommodationController.findAll().size();
+        ResponseEntity<AccommodationInfo[]> responseAfterDelete =
+                restTemplate.getForEntity("/api/accommodations", AccommodationInfo[].class);
+        List<AccommodationInfo> accommodationInfosAfterDelete = List.of(Objects.requireNonNull(responseAfterDelete.getBody()));
+        int sizeAfterDelete = accommodationInfosAfterDelete.size();
+
         assertThat(sizeAfterDelete).isEqualTo(0);
     }
 

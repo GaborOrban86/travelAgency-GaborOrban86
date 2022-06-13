@@ -3,7 +3,9 @@ package travelagency.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import travelagency.dto.*;
+import travelagency.dto.ProgramCreateCommand;
+import travelagency.dto.ProgramInfo;
+import travelagency.dto.ProgramModifyCommand;
 import travelagency.service.ProgramService;
 
 import javax.validation.Valid;
@@ -43,7 +45,7 @@ public class ProgramController {
     @PutMapping("/{programId}")
     @ResponseStatus(HttpStatus.OK)
     public ProgramInfo modifyProgram(@PathVariable("programId") Integer programId,
-                                                 @RequestBody @Valid ProgramModifyCommand updateCommand) {
+                                     @RequestBody @Valid ProgramModifyCommand updateCommand) {
         log.info("Http request, POST /api/programs/{programId}, body: " + updateCommand.toString());
         return programService.modifyProgram(programId, updateCommand);
     }

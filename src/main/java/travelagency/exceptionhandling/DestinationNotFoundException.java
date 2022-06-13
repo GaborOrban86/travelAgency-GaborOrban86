@@ -1,6 +1,6 @@
 package travelagency.exceptionhandling;
 
-public class DestinationNotFoundException extends RuntimeException{
+public class DestinationNotFoundException extends RuntimeException {
     private final Integer destinationNotFound;
 
     public DestinationNotFoundException(Integer destinationNotFound) {

@@ -4,8 +4,9 @@ package travelagency.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import travelagency.dto.*;
-import travelagency.service.TravelService;
+import travelagency.dto.TravellerCreateCommand;
+import travelagency.dto.TravellerInfo;
+import travelagency.dto.TravellerModifyCommand;
 import travelagency.service.TravellerService;
 
 import javax.validation.Valid;
@@ -45,7 +46,7 @@ public class TravellerController {
     @PutMapping("/{travellerId}")
     @ResponseStatus(HttpStatus.OK)
     public TravellerInfo modifyTravel(@PathVariable("travellerId") Integer travellerId,
-                                   @RequestBody @Valid TravellerModifyCommand updateCommand) {
+                                      @RequestBody @Valid TravellerModifyCommand updateCommand) {
         log.info("Http request, POST /api/travellers/{travellerId}, body: " + updateCommand.toString());
         return travellerService.modifyTravellerNameAndEmail(travellerId, updateCommand);
     }

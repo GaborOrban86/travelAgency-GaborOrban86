@@ -12,6 +12,8 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = CateringValidator.class)
 public @interface Catering {
     String message() default "must be FULL, HALF or NOTHING";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

@@ -12,6 +12,8 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = TypeValidator.class)
 public @interface Type {
     String message() default "must be SOLO, COUPLE or FAMILY";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

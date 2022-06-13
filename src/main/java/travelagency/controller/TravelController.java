@@ -45,7 +45,7 @@ public class TravelController {
     @PutMapping("/{travelId}")
     @ResponseStatus(HttpStatus.OK)
     public TravelInfo modifyTravel(@PathVariable("travelId") Integer travelId,
-                                         @RequestBody @Valid TravelModifyCommand updateCommand) {
+                                   @RequestBody @Valid TravelModifyCommand updateCommand) {
         log.info("Http request, POST /api/travels/{travelId}, body: " + updateCommand.toString());
         return travelService.updateTravelDates(travelId, updateCommand);
     }
