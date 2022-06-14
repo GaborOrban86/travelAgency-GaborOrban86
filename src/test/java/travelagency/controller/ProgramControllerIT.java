@@ -45,7 +45,7 @@ public class ProgramControllerIT {
     }
 
     @Test
-    void testProgramById_BadRequest() {
+    void testGetProgramById_BadRequest() {
         ResponseEntity<String> response = restTemplate.getForEntity("/api/programs/10", String.class);
         AssertionsForClassTypes.assertThat(response.getStatusCodeValue()).isEqualTo(400);
     }

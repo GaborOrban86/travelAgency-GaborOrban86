@@ -53,15 +53,15 @@ public class TravelControllerIT {
     @Test
     void TestModifyTravel_Success() {
 
-        int priceBeforeModify = restTemplate.getForObject("/api/travels/1", TravelInfo.class).getWholePrice();
-        assertThat(priceBeforeModify).isEqualTo(50000);
+        int daysBeforeModify = restTemplate.getForObject("/api/travels/1", TravelInfo.class).getDays();
+        assertThat(daysBeforeModify).isEqualTo(2);
 
         restTemplate.put("/api/travels/1", new TravelModifyCommand(
                 LocalDate.of(2022, Month.SEPTEMBER, 10),
                 LocalDate.of(2022, Month.SEPTEMBER, 11)), TravelModifyCommand.class);
 
-        int priceAfterModify = restTemplate.getForObject("/api/travels/1", TravelInfo.class).getWholePrice();
-        assertThat(priceAfterModify).isEqualTo(25000);
+        int daysAfterModify = restTemplate.getForObject("/api/travels/1", TravelInfo.class).getDays();
+        assertThat(daysAfterModify).isEqualTo(1);
     }
 
     @Test

@@ -8,7 +8,6 @@ import travelagency.domain.enums.AccommodationType;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class AccommodationInfo {
     private Integer id;
     private String name;
