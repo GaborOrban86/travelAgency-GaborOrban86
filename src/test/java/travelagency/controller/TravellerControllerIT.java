@@ -51,8 +51,10 @@ public class TravellerControllerIT {
     }
 
     @Test
-    void testGetTravellerById_BadRequest() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/api/travellers/10", String.class);
+    void testSaveTraveller_ValidationError() {
+        ResponseEntity<String> response = restTemplate.postForEntity("/api/travellers",
+                new TravellerCreateCommand("Pityu", "pitpityuhJu",
+                        LocalDate.of(1986, Month.JUNE, 9), 1), String.class);
         AssertionsForClassTypes.assertThat(response.getStatusCodeValue()).isEqualTo(400);
     }
 
@@ -99,5 +101,11 @@ public class TravellerControllerIT {
         int sizeAfterDelete = travellersAfterDelete.size();
 
         assertThat(sizeAfterDelete).isEqualTo(0);
+    }
+
+    @Test
+    void testGetTravellerById_BadRequest() {
+        ResponseEntity<String> response = restTemplate.getForEntity("/api/travellers/10", String.class);
+        AssertionsForClassTypes.assertThat(response.getStatusCodeValue()).isEqualTo(400);
     }
 }

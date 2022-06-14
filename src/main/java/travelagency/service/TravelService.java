@@ -97,22 +97,29 @@ public class TravelService {
         if (travelFound == null || travelFound.isDeleted()) {
             throw new TravelNotFoundException(id);
         }
+
         Accommodation accommodationOfTravel = travelFound.getAccommodation();
         List<Program> programsOfTravel = travelFound.getPrograms();
-        List<Traveller> travelleresOfTravel = travelFound.getTravellers();
+        List<Traveller> travellersOfTravel = travelFound.getTravellers();
 
         for (Program program : programsOfTravel) {
             program.setTravel(null);
+            program.setDeleted(true);
         }
 
-        for (Traveller traveller : travelleresOfTravel) {
+        for (Traveller traveller : travellersOfTravel) {
             traveller.setTravel(null);
+            traveller.setDeleted(true);
         }
 
+        if (accommodationOfTravel != null) {
+            travelFound.setAccommodation(null);
+            accommodationOfTravel.setTravel(null);
+            accommodationOfTravel.setDeleted(true);
+        }
 
-        travelFound.setAccommodation(null);
-        travelFound.setTravellers(null);
-        travelFound.setPrograms(null);
+        travelFound.getTravellers().clear();
+        travelFound.getPrograms().clear();
 
         travelRepository.delete(travelFound);
     }
