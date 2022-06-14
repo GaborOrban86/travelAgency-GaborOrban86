@@ -1,6 +1,7 @@
 package travelagency.controller;
 
 
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,23 +37,17 @@ public class TravelControllerIT {
     }
 
     @Test
-    void testGetTravelById_BADREQUEST() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/api/travels/10", String.class);
-        assertThat(response.getStatusCodeValue()).isEqualTo(400);
-    }
-
-    @Test
-    void testFindAllStatus_Ok() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/api/travels", String.class);
-        assertThat(response.getStatusCodeValue()).isEqualTo(200);
-    }
-
-    @Test
     void testFindAll_ListSize_Success() {
         ResponseEntity<TravelInfo[]> response =
                 restTemplate.getForEntity("/api/travels", TravelInfo[].class);
         List<TravelInfo> travels = List.of(Objects.requireNonNull(response.getBody()));
         assertThat(travels.size()).isEqualTo(1);
+    }
+
+    @Test
+    void testGetTravelById_BadRequest() {
+        ResponseEntity<String> response = restTemplate.getForEntity("/api/travels/10", String.class);
+        assertThat(response.getStatusCodeValue()).isEqualTo(400);
     }
 
     @Test
@@ -70,7 +65,15 @@ public class TravelControllerIT {
     }
 
     @Test
-    void testDelete() {
+    void TestSaveTravelWithWrongDestination_BadRequest() {
+        ResponseEntity<String> response = restTemplate.postForEntity("/api/travels",
+                new TravelCreateCommand(33, LocalDate.of(2022, Month.SEPTEMBER, 10),
+                        LocalDate.of(2022, Month.SEPTEMBER, 12)), String.class);
+        AssertionsForClassTypes.assertThat(response.getStatusCodeValue()).isEqualTo(400);
+    }
+
+    @Test
+    void testDeleteTravel_Success() {
 
         ResponseEntity<TravelInfo[]> response =
                 restTemplate.getForEntity("/api/travels", TravelInfo[].class);

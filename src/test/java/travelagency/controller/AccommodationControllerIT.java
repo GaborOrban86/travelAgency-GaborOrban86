@@ -1,5 +1,6 @@
 package travelagency.controller;
 
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +37,18 @@ public class AccommodationControllerIT {
     }
 
     @Test
-    void testGetAccommodationByIdAndSave_OneAccommodation_Success() {
+    void testGetAccommodationById_Success() {
 
         AccommodationInfo accommodationInfo = restTemplate.getForObject("/api/accommodations/1", AccommodationInfo.class);
         assertThat(accommodationInfo)
                 .extracting(AccommodationInfo::getPrice)
                 .isEqualTo(10000);
+    }
+
+    @Test
+    void testGetTravelById_BadRequest() {
+        ResponseEntity<String> response = restTemplate.getForEntity("/api/accommodations/10", String.class);
+        AssertionsForClassTypes.assertThat(response.getStatusCodeValue()).isEqualTo(400);
     }
 
     @Test
@@ -58,7 +65,16 @@ public class AccommodationControllerIT {
     }
 
     @Test
-    void testDelete() {
+    void testAccommodationSaveForTheSameTravel_BadRequest() {
+        ResponseEntity<String> response = restTemplate.postForEntity("/api/accommodations",
+                new AccommodationCreateCommand("Hilton", "SOLO", "FULL", 1, 10000),
+                String.class);
+        AssertionsForClassTypes.assertThat(response.getStatusCodeValue()).isEqualTo(400);
+    }
+
+
+    @Test
+    void testDeleteAccommodation_Success() {
 
         ResponseEntity<AccommodationInfo[]> response =
                 restTemplate.getForEntity("/api/accommodations", AccommodationInfo[].class);
