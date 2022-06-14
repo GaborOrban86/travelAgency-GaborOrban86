@@ -110,9 +110,9 @@ public class TravellerService {
     public int travellerFeesSetter(long age, int wholePrice) {
         double result = wholePrice;
         if (age <= 4) {
-            result = wholePrice * babyDiscount;
+            result = wholePrice - (wholePrice * babyDiscount);
         } else if (age <= 12) {
-            result = wholePrice * childDiscount;
+            result = wholePrice - (wholePrice * childDiscount);
         }
 
         return (int) result;

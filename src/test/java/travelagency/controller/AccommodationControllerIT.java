@@ -26,17 +26,17 @@ public class AccommodationControllerIT {
     TestRestTemplate restTemplate;
 
     @BeforeEach
-    void putTravel() {
+    void putTravelAndAccommodation() {
         restTemplate.postForObject("/api/travels",
                 new TravelCreateCommand(2, LocalDate.of(2022, Month.SEPTEMBER, 10),
                         LocalDate.of(2022, Month.SEPTEMBER, 13)), TravelInfo.class);
+        restTemplate.postForObject("/api/accommodations",
+                new AccommodationCreateCommand("Hilton", "SOLO", "FULL", 1, 10000),
+                AccommodationInfo.class);
     }
 
     @Test
     void testGetAccommodationByIdAndSave_OneAccommodation_Success() {
-        restTemplate.postForObject("/api/accommodations",
-                new AccommodationCreateCommand("Hilton", "SOLO", "FULL", 1, 10000),
-                AccommodationInfo.class);
 
         AccommodationInfo accommodationInfo = restTemplate.getForObject("/api/accommodations/1", AccommodationInfo.class);
         assertThat(accommodationInfo)
@@ -45,9 +45,7 @@ public class AccommodationControllerIT {
     }
 
     @Test
-    void testModifyAccommodation_SUCCESS() {
-        restTemplate.postForObject("/api/accommodations", new AccommodationCreateCommand(
-                "Hilton", "SOLO", "FULL", 1, 10000), AccommodationCreateCommand.class);
+    void testModifyAccommodation_Success() {
 
         restTemplate.put("/api/accommodations/1",
                 new AccommodationModifyCommand("Bubu Hotel", "FAMILY", "FULL", 5000),
@@ -61,8 +59,6 @@ public class AccommodationControllerIT {
 
     @Test
     void testDelete() {
-        restTemplate.postForObject("/api/accommodations", new AccommodationCreateCommand(
-                "Hilton", "SOLO", "FULL", 1, 10000), AccommodationCreateCommand.class);
 
         ResponseEntity<AccommodationInfo[]> response =
                 restTemplate.getForEntity("/api/accommodations", AccommodationInfo[].class);

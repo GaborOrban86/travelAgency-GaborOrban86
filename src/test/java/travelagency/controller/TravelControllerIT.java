@@ -1,13 +1,14 @@
 package travelagency.controller;
 
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.web.servlet.MockMvc;
 import travelagency.dto.TravelCreateCommand;
 import travelagency.dto.TravelInfo;
 import travelagency.dto.TravelModifyCommand;
@@ -15,70 +16,74 @@ import travelagency.dto.TravelModifyCommand;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
+import java.util.Objects;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
-
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class TravelControllerIT {
 
-
     @Autowired
-    TravelController travelController;
+    TestRestTemplate restTemplate;
 
-    @Autowired
-    MockMvc mockMvc;
-
-    @Test
-    void testGetTravelById_BADREQUEST() throws Exception {
-
-        mockMvc.perform(get("/api/travels/10"))
-                .andExpect(status().isBadRequest());
+    @BeforeEach
+    void putTravel() {
+        restTemplate.postForObject("/api/travels",
+                new TravelCreateCommand(2, LocalDate.of(2022, Month.SEPTEMBER, 10),
+                        LocalDate.of(2022, Month.SEPTEMBER, 12)), TravelInfo.class);
     }
 
     @Test
-    void testFindAllStatus_OK() throws Exception {
-        mockMvc.perform(get("/api/travels"))
-                .andExpect(status().isOk());
+    void testGetTravelById_BADREQUEST() {
+        ResponseEntity<String> response = restTemplate.getForEntity("/api/travels/10", String.class);
+        assertThat(response.getStatusCodeValue()).isEqualTo(400);
     }
 
     @Test
-    void testFindAll_EmptyList_Success() {
-        List<TravelInfo> travels = travelController.findAll();
-        assertThat(travels).hasSize(0);
+    void testFindAllStatus_Ok() {
+        ResponseEntity<String> response = restTemplate.getForEntity("/api/travels", String.class);
+        assertThat(response.getStatusCodeValue()).isEqualTo(200);
     }
 
     @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
+    void testFindAll_ListSize_Success() {
+        ResponseEntity<TravelInfo[]> response =
+                restTemplate.getForEntity("/api/travels", TravelInfo[].class);
+        List<TravelInfo> travels = List.of(Objects.requireNonNull(response.getBody()));
+        assertThat(travels.size()).isEqualTo(1);
+    }
+
+    @Test
     void TestModifyTravel_Success() {
-        travelController.save(new TravelCreateCommand(2, LocalDate.of(2022,
-                Month.SEPTEMBER, 10), LocalDate.of(2022, Month.SEPTEMBER, 12)));
-        TravelInfo travel = travelController.getTravelById(1);
-        int result = travel.getWholePrice();
-        assertThat(result).isEqualTo(50000);
 
-        travelController.modifyTravel(1, new TravelModifyCommand(LocalDate.of(2022,
-                Month.SEPTEMBER, 10), LocalDate.of(2022, Month.SEPTEMBER, 11)));
+        int priceBeforeModify = restTemplate.getForObject("/api/travels/1", TravelInfo.class).getWholePrice();
+        assertThat(priceBeforeModify).isEqualTo(50000);
 
-        TravelInfo newTravel = travelController.getTravelById(1);
-        int newResult = newTravel.getWholePrice();
-        assertThat(newResult).isEqualTo(25000);
+        restTemplate.put("/api/travels/1", new TravelModifyCommand(
+                LocalDate.of(2022, Month.SEPTEMBER, 10),
+                LocalDate.of(2022, Month.SEPTEMBER, 11)), TravelModifyCommand.class);
+
+        int priceAfterModify = restTemplate.getForObject("/api/travels/1", TravelInfo.class).getWholePrice();
+        assertThat(priceAfterModify).isEqualTo(25000);
     }
 
     @Test
     void testDelete() {
-        travelController.save(new TravelCreateCommand(2, LocalDate.of(2022,
-                Month.SEPTEMBER, 10), LocalDate.of(2022, Month.SEPTEMBER, 12)));
-        int sizeBeforeDelete = travelController.findAll().size();
+
+        ResponseEntity<TravelInfo[]> response =
+                restTemplate.getForEntity("/api/travels", TravelInfo[].class);
+        int sizeBeforeDelete = List.of(Objects.requireNonNull(response.getBody())).size();
+
         assertThat(sizeBeforeDelete).isEqualTo(1);
 
-        travelController.deleteTravel(1);
+        restTemplate.delete("/api/travels/1");
 
-        int sizeAfterDelete = travelController.findAll().size();
+        ResponseEntity<TravelInfo[]> responseAfterDelete =
+                restTemplate.getForEntity("/api/travels", TravelInfo[].class);
+        int sizeAfterDelete = List.of(Objects.requireNonNull(responseAfterDelete.getBody())).size();
+
         assertThat(sizeAfterDelete).isEqualTo(0);
     }
 
