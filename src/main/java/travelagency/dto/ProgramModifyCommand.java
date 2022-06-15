@@ -28,7 +28,7 @@ public class ProgramModifyCommand {
 
     @NotNull(message = "Must be not null!")
     @Positive(message = "Must be a positive number!")
-    @Schema(description = "Proce of program", example = "30000")
+    @Schema(description = "Price of program", example = "30000")
     private Integer price;
 
 }

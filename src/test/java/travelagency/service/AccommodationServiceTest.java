@@ -11,13 +11,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import travelagency.domain.Accommodation;
 import travelagency.domain.Destination;
-import travelagency.domain.Program;
 import travelagency.domain.Travel;
 import travelagency.domain.enums.AccommodationCatering;
 import travelagency.domain.enums.AccommodationType;
 import travelagency.dto.AccommodationInfo;
 import travelagency.dto.AccommodationModifyCommand;
-import travelagency.dto.ProgramInfo;
 import travelagency.exceptionhandling.AccommodationNotFoundException;
 import travelagency.repository.AccommodationRepository;
 
@@ -28,7 +26,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 @ExtendWith({MockitoExtension.class, SoftAssertionsExtension.class})
