@@ -60,7 +60,6 @@ public class TravellerControllerIT {
 
     @Test
     void testModifyTraveller_Success() {
-
         restTemplate.put("/api/travellers/1",
                 new TravellerModifyCommand("John Bull", "jhon@jhonny.com"),
                 TravellerModifyCommand.class);
@@ -73,7 +72,6 @@ public class TravellerControllerIT {
 
     @Test
     void testSaveTravellerWithoutProgram_BadRequest() {
-
         restTemplate.delete("/api/travellers/1");
         restTemplate.delete("/api/programs/1");
 
@@ -84,8 +82,20 @@ public class TravellerControllerIT {
     }
 
     @Test
-    void testDeleteTraveller_Success() {
+    void testSaveYoungTravellerWithPrice_Success() {
+        restTemplate.postForObject("/api/travellers",
+                new TravellerCreateCommand("Pityu", "pityu@pityu.hu",
+                        LocalDate.of(2015, Month.JUNE, 9), 1), TravellerCreateCommand.class);
 
+        int fullPrice = restTemplate.getForObject("/api/travels/1", TravelInfo.class).getWholePrice();
+        int expectedPrice = fullPrice / 2;
+        int resultPrice = restTemplate.getForObject("/api/travellers/2", TravellerInfo.class).getAllFees();
+        assertThat(resultPrice).isEqualTo(expectedPrice);
+
+    }
+
+    @Test
+    void testDeleteTraveller_Success() {
         ResponseEntity<TravellerInfo[]> response =
                 restTemplate.getForEntity("/api/travellers", TravellerInfo[].class);
         List<TravellerInfo> travellerInfos = List.of(Objects.requireNonNull(response.getBody()));

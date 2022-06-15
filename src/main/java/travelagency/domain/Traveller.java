@@ -17,7 +17,6 @@ public class Traveller {
 
     private String Name;
     private String email;
-
     private LocalDate birthday;
     private long age;
 
@@ -26,7 +25,6 @@ public class Traveller {
     private Travel travel;
 
     private Integer allFees;
-
     private boolean deleted;
 
 

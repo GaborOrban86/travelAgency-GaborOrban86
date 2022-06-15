@@ -38,7 +38,6 @@ public class AccommodationControllerIT {
 
     @Test
     void testGetAccommodationById_Success() {
-
         AccommodationInfo accommodationInfo = restTemplate.getForObject("/api/accommodations/1", AccommodationInfo.class);
         assertThat(accommodationInfo)
                 .extracting(AccommodationInfo::getPrice)
@@ -53,7 +52,6 @@ public class AccommodationControllerIT {
 
     @Test
     void testModifyAccommodation_Success() {
-
         restTemplate.put("/api/accommodations/1",
                 new AccommodationModifyCommand("Bubu Hotel", "FAMILY", "FULL", 5000),
                 AccommodationModifyCommand.class);
@@ -75,7 +73,6 @@ public class AccommodationControllerIT {
 
     @Test
     void testDeleteAccommodation_Success() {
-
         ResponseEntity<AccommodationInfo[]> response =
                 restTemplate.getForEntity("/api/accommodations", AccommodationInfo[].class);
         List<AccommodationInfo> accommodationInfos = List.of(Objects.requireNonNull(response.getBody()));

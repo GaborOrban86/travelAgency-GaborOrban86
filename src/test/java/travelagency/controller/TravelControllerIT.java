@@ -52,7 +52,6 @@ public class TravelControllerIT {
 
     @Test
     void TestModifyTravel_Success() {
-
         int daysBeforeModify = restTemplate.getForObject("/api/travels/1", TravelInfo.class).getDays();
         assertThat(daysBeforeModify).isEqualTo(2);
 
@@ -74,7 +73,6 @@ public class TravelControllerIT {
 
     @Test
     void testDeleteTravel_Success() {
-
         ResponseEntity<TravelInfo[]> response =
                 restTemplate.getForEntity("/api/travels", TravelInfo[].class);
         int sizeBeforeDelete = List.of(Objects.requireNonNull(response.getBody())).size();

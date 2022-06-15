@@ -26,6 +26,5 @@ public class Accommodation {
     private Travel travel;
 
     private Integer price;
-
     private boolean deleted;
 }

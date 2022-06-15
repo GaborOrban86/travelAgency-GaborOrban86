@@ -37,7 +37,6 @@ public class ProgramControllerIT {
 
     @Test
     void testGetProgramById_Success() {
-
         ProgramInfo programInfo = restTemplate.getForObject("/api/programs/1", ProgramInfo.class);
         assertThat(programInfo)
                 .extracting(ProgramInfo::getGuide)
@@ -52,7 +51,6 @@ public class ProgramControllerIT {
 
     @Test
     void testModifyProgram_Success() {
-
         restTemplate.put("/api/programs/1",
                 new ProgramModifyCommand("Dodgeball", "Another funny game.", "Duck Do", 4000),
                 ProgramModifyCommand.class);
@@ -81,7 +79,6 @@ public class ProgramControllerIT {
 
     @Test
     void testDeleteProgram_Success() {
-
         ResponseEntity<ProgramInfo[]> response =
                 restTemplate.getForEntity("/api/programs", ProgramInfo[].class);
         List<ProgramInfo> programInfos = List.of(Objects.requireNonNull(response.getBody()));
