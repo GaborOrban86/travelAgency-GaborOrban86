@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = TypeValidator.class)
 public @interface Type {
-    String message() default "must be SOLO, COUPLE or FAMILY";
+    String message() default "Must be SOLO, COUPLE or FAMILY!";
 
     Class<?>[] groups() default {};
 

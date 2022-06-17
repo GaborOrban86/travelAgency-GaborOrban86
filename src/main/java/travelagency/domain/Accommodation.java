@@ -18,8 +18,8 @@ public class Accommodation {
     private Integer id;
 
     private String name;
-    private AccommodationType type;
-    private AccommodationCatering catering;
+    private String type;
+    private String catering;
 
     @OneToOne
     @JoinColumn(name = "travel_id")

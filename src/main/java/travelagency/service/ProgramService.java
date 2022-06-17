@@ -36,7 +36,7 @@ public class ProgramService {
 
         Travel travelForProgram = travelRepository.findById(command.getTravelId());
 
-        if (travelForProgram == null) {
+        if (travelForProgram == null || travelForProgram.isDeleted()) {
             throw new TravelNotFoundException(command.getTravelId());
         }
 

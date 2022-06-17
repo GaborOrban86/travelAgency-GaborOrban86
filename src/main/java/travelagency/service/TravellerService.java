@@ -44,7 +44,7 @@ public class TravellerService {
 
         Travel travelForTraveller = travelRepository.findById(command.getTravelId());
 
-        if (travelForTraveller == null) {
+        if (travelForTraveller == null || travelForTraveller.isDeleted()) {
             throw new TravelNotFoundException(command.getTravelId());
         }
         if (travelForTraveller.getAccommodation() == null || travelForTraveller.getPrograms().isEmpty()) {

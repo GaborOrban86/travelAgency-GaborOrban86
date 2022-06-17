@@ -11,7 +11,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = CateringValidator.class)
 public @interface Catering {
-    String message() default "must be FULL, HALF or NOTHING";
+
+    String message() default "Must be FULL, HALF or NOTHING!";
 
     Class<?>[] groups() default {};
 

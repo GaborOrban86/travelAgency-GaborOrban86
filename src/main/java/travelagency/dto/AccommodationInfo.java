@@ -10,8 +10,8 @@ import travelagency.domain.enums.AccommodationType;
 public class AccommodationInfo {
     private Integer id;
     private String name;
-    private AccommodationType type;
-    private AccommodationCatering catering;
+    private String type;
+    private String catering;
     private Integer travelId;
     private Integer price;
 }

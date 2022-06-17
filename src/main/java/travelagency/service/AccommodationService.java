@@ -18,6 +18,7 @@ import travelagency.repository.AccommodationRepository;
 import travelagency.repository.TravelRepository;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,7 +40,7 @@ public class AccommodationService {
 
         Travel travelForAccommodation = travelRepository.findById(command.getTravelId());
 
-        if (travelForAccommodation == null) {
+        if (travelForAccommodation == null || travelForAccommodation.isDeleted()) {
             throw new TravelNotFoundException(command.getTravelId());
         }
         if (travelForAccommodation.getAccommodation() != null) {
@@ -47,8 +48,8 @@ public class AccommodationService {
         }
 
         toSave.setName(command.getName());
-        toSave.setType(AccommodationType.valueOf(command.getType()));
-        toSave.setCatering(AccommodationCatering.valueOf(command.getCatering()));
+        toSave.setType(command.getType().toUpperCase(Locale.ROOT));
+        toSave.setCatering(command.getCatering().toUpperCase(Locale.ROOT));
         toSave.setPrice(command.getPrice());
 
 
@@ -91,8 +92,8 @@ public class AccommodationService {
                         (command.getPrice() * travelOfAccommodation.getDays()));
 
         toModify.setName(command.getName());
-        toModify.setType(AccommodationType.valueOf(command.getType()));
-        toModify.setCatering(AccommodationCatering.valueOf(command.getCatering()));
+        toModify.setType(command.getType().toUpperCase(Locale.ROOT));
+        toModify.setCatering(command.getCatering().toUpperCase(Locale.ROOT));
         toModify.setPrice(command.getPrice());
 
         return modelMapper.map(toModify, AccommodationInfo.class);

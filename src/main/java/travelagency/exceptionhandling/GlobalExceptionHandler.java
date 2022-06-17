@@ -27,14 +27,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<List<ValidationError>> handleDestinationNotFoundException(
             DestinationNotFoundException exception) {
         ValidationError validationError = new ValidationError("destinationId",
-                "no destination found with id:" + exception.getDestinationNotFound());
+                "No destination found with id: " + exception.getDestinationNotFound());
         return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(TravelNotFoundException.class)
     public ResponseEntity<List<ValidationError>> handleTravelNotFoundException(TravelNotFoundException exception) {
         ValidationError validationError = new ValidationError("travelId",
-                "no travel found with id:" + exception.getIdNotFound());
+                "No travel found with id: " + exception.getIdNotFound());
         return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
     }
 
@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<List<ValidationError>> handleAccommodationNotFoundException(
             AccommodationNotFoundException exception) {
         ValidationError validationError = new ValidationError("accommodationId",
-                "no accommodation found with id:" + exception.getIdNotFound());
+                "No accommodation found with id: " + exception.getIdNotFound());
         return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
     }
 
@@ -50,14 +50,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<List<ValidationError>> handleAccommodationAlreadyExistsException(
             AccommodationAlreadyExistsException exception) {
         ValidationError validationError = new ValidationError("accommodationId",
-                "this travel has an accommodation with id:" + exception.getIdFound());
+                "This travel has an accommodation with id: " + exception.getIdFound());
         return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ProgramNotFoundException.class)
     public ResponseEntity<List<ValidationError>> handleProgramNotFoundException(ProgramNotFoundException exception) {
         ValidationError validationError = new ValidationError("programId",
-                "no program found with id:" + exception.getIdNotFound());
+                "No program found with id: " + exception.getIdNotFound());
         return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
     }
 
@@ -65,7 +65,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<List<ValidationError>> handleTravellerNotFoundException(
             TravellerNotFoundException exception) {
         ValidationError validationError = new ValidationError("travellerId",
-                "no traveller found with id:" + exception.getIdNotFound());
+                "No traveller found with id: " + exception.getIdNotFound());
         return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
     }
 
@@ -73,7 +73,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<List<ValidationError>> handleTravelWithoutAccommodationAndProgramsException(
             TravelWithoutAccommodationAndProgramsException exception) {
         ValidationError validationError = new ValidationError("travel",
-                "You need to put accommodation and programs first into the travel");
+                "You need to put accommodation and programs first into the travel!");
         return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
     }
 
@@ -81,8 +81,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<List<ValidationError>> handleTravelWithTravellersException(
             TravelWithTravellersException exception) {
         ValidationError validationError = new ValidationError("travel",
-                "You can't put, modify or delete accommodation or program if you already put travellers " +
-                        "into the travel");
+                "You can't put, modify or delete accommodation or program if you already put " +
+                        "travellers into the travel!");
         return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
     }
 }

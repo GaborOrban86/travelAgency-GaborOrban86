@@ -5,6 +5,7 @@ import travelagency.domain.enums.AccommodationType;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -20,6 +21,6 @@ public class TypeValidator implements ConstraintValidator<Type, String> {
 
     @Override
     public boolean isValid(String string, ConstraintValidatorContext constraintValidatorContext) {
-        return !string.isBlank() && validValues.contains(string);
+        return !string.isBlank() && validValues.contains(string.toUpperCase(Locale.ROOT));
     }
 }
