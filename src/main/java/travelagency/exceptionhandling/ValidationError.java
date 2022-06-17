@@ -1,13 +1,19 @@
 package travelagency.exceptionhandling;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class ValidationError {
-    private String field;
-    private String errorMessage;
+    private final String field;
+    private final String errorMessage;
+
+    public ValidationError(String field, String errorMessage) {
+        this.field = field;
+        this.errorMessage = errorMessage;
+    }
+
+    public String getField() {
+        return field;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
 }

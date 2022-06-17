@@ -11,10 +11,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import travelagency.domain.Accommodation;
 import travelagency.domain.Destination;
+import travelagency.domain.Program;
 import travelagency.domain.Travel;
-import travelagency.dto.TravelInfo;
-import travelagency.dto.TravelModifyCommand;
+import travelagency.dto.*;
 import travelagency.exceptionhandling.TravelNotFoundException;
+import travelagency.repository.DestinationRepository;
 import travelagency.repository.TravelRepository;
 
 import java.time.LocalDate;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -33,18 +35,25 @@ public class TravelServiceTest {
     TravelRepository travelRepository;
 
     @Mock
+    DestinationRepository destinationRepository;
+
+    @Mock
     ModelMapper modelMapper;
 
     @InjectMocks
     TravelService travelService;
 
     private Travel travel;
+    private Destination destination;
 
     @BeforeEach
     void setUp() {
+        destination = new Destination();
+        destination.setName("Naples");
+        destination.setPrice(20000);
+
         travel = new Travel();
-        travel.setId(1);
-        travel.setDestination(new Destination());
+        travel.setDestination(destination);
         travel.setAccommodation(new Accommodation());
         travel.setStartDate(LocalDate.of(2022, Month.JULY, 10));
         travel.setEndDate(LocalDate.of(2022, Month.JULY, 12));
@@ -62,6 +71,19 @@ public class TravelServiceTest {
     }
 
     @Test
+    void testSaveProgram_Success() {
+        when(destinationRepository.findById(1)).thenReturn(destination);
+        when(travelRepository.findById(1)).thenReturn(travel);
+
+        TravelInfo result = travelService.saveTravel(new TravelCreateCommand(1,
+                LocalDate.of(2022, Month.JULY, 10), LocalDate.of(2022, Month.JULY, 12)));
+
+        Travel byId = travelRepository.findById(1);
+        TravelInfo mappedTravel = modelMapper.map(byId, TravelInfo.class);
+        Assertions.assertEquals(mappedTravel, result);
+    }
+
+    @Test
     void testFindTravelById_Success() {
         when(travelRepository.findById(1)).thenReturn(travel);
         TravelInfo infoFromTravel = modelMapper.map(travel, TravelInfo.class);
@@ -74,6 +96,17 @@ public class TravelServiceTest {
     void testTravelNotFound_Exception() {
         when(travelRepository.findById(1)).thenReturn(null);
         assertThrows(TravelNotFoundException.class, () -> travelService.updateTravelDates(1, new TravelModifyCommand()));
+    }
+
+    @Test
+    void testModifyTravel_Success() {
+        when(travelRepository.findById(1)).thenReturn(travel);
+
+        TravelInfo result = travelService.updateTravelDates(1, new TravelModifyCommand(
+                LocalDate.of(2022, Month.JULY, 10), LocalDate.of(2022, Month.JULY, 11)));
+        Travel byId = travelRepository.findById(1);
+        TravelInfo mappedTravel = modelMapper.map(byId, TravelInfo.class);
+        assertEquals(mappedTravel, result);
     }
 
     @Test
