@@ -13,10 +13,12 @@ import travelagency.domain.Accommodation;
 import travelagency.domain.Destination;
 import travelagency.domain.Program;
 import travelagency.domain.Travel;
+import travelagency.dto.ProgramCreateCommand;
 import travelagency.dto.ProgramInfo;
 import travelagency.dto.ProgramModifyCommand;
 import travelagency.exceptionhandling.ProgramNotFoundException;
 import travelagency.repository.ProgramRepository;
+import travelagency.repository.TravelRepository;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -24,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -34,18 +37,21 @@ public class ProgramServiceTest {
     ProgramRepository programRepository;
 
     @Mock
+    TravelRepository travelRepository;
+
+    @Mock
     ModelMapper modelMapper;
 
     @InjectMocks
     ProgramService programService;
 
     private Program program;
+    private Travel travel;
 
     @BeforeEach
     void setUp() {
-        Travel travel = new Travel();
-        travel.setId(1);
-        travel.setDestination(new Destination());
+        travel = new Travel();
+        travel.setDestination(new Destination(1, "Naples", 20000));
         travel.setAccommodation(new Accommodation());
         travel.setStartDate(LocalDate.of(2022, Month.JULY, 10));
         travel.setEndDate(LocalDate.of(2022, Month.JULY, 12));
@@ -56,7 +62,6 @@ public class ProgramServiceTest {
         travel.setDeleted(false);
 
         program = new Program();
-        program.setId(1);
         program.setName("Hide and Seek");
         program.setDescription("It's a good game");
         program.setGuide("Guide Richie");
@@ -65,10 +70,27 @@ public class ProgramServiceTest {
         program.setDeleted(false);
     }
 
+
     @Test
     void testListFindAll_EmptyList() {
         when(programRepository.findAll()).thenReturn(List.of());
         assertThat(programService.findAllPrograms()).isEmpty();
+    }
+
+    @Test
+    void testSaveProgram_Success() {
+
+        when(programRepository.save(program)).thenReturn(program);
+        when(travelRepository.findById(1)).thenReturn(travel);
+
+        ProgramInfo result = programService.saveProgram(new ProgramCreateCommand(
+                "Hide and Seek", "It's a good game", "Guide Richie", 5000, 1));
+
+        when(programRepository.findById(1)).thenReturn(program);
+
+        Program byId = programRepository.findById(1);
+        ProgramInfo mappedProgram = modelMapper.map(byId, ProgramInfo.class);
+        Assertions.assertEquals(mappedProgram, result);
     }
 
     @Test
@@ -85,6 +107,17 @@ public class ProgramServiceTest {
         when(programRepository.findById(1)).thenReturn(null);
         assertThrows(ProgramNotFoundException.class, () ->
                 programService.modifyProgram(1, new ProgramModifyCommand()));
+    }
+
+    @Test
+    void testModifyProgram_Success() {
+        when(programRepository.findById(1)).thenReturn(program);
+
+        ProgramInfo result = programService.modifyProgram(1, new ProgramModifyCommand("name",
+                "description", "guide", 1));
+        Program byId = programRepository.findById(1);
+        ProgramInfo mappedProgram = modelMapper.map(byId, ProgramInfo.class);
+        assertEquals(mappedProgram, result);
     }
 
     @Test
