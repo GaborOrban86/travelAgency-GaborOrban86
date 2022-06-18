@@ -13,6 +13,7 @@ import travelagency.domain.*;
 import travelagency.dto.TravellerCreateCommand;
 import travelagency.dto.TravellerInfo;
 import travelagency.dto.TravellerModifyCommand;
+import travelagency.exceptionhandling.TravelNotFoundException;
 import travelagency.exceptionhandling.TravellerNotFoundException;
 import travelagency.repository.TravelRepository;
 import travelagency.repository.TravellerRepository;
@@ -47,7 +48,6 @@ public class TravellerServiceTest {
 
     @BeforeEach
     void setUp() {
-
         Accommodation accommodation = new Accommodation();
         accommodation.setName("Hilton Hotel");
         accommodation.setType("SOLO");
@@ -110,6 +110,15 @@ public class TravellerServiceTest {
     }
 
     @Test
+    void testSaveTraveller_Exception() {
+        when(travelRepository.findById(1)).thenReturn(null);
+
+        assertThrows(TravelNotFoundException.class, () ->
+                travellerService.saveTraveller(new TravellerCreateCommand("Tim Travel", "tim@travel.hu",
+                        LocalDate.of(2000, Month.AUGUST, 1), 1)));
+    }
+
+    @Test
     void testFindTravellerById_Success() {
         when(travellerRepository.findById(1)).thenReturn(traveller);
         TravellerInfo infoFromTraveller = modelMapper.map(traveller, TravellerInfo.class);
@@ -126,8 +135,11 @@ public class TravellerServiceTest {
 
     @Test
     void testTravellerFeesSetter() {
-        int result = travellerService.travellerFeesSetter(35, 20000);
-        Assertions.assertEquals(20000, result);
+        int result = travellerService.travellerFeesSetter(12, 20000, 1.0, 0.5);
+        Assertions.assertEquals(10000, result);
+
+        int result2 = travellerService.travellerFeesSetter(2, 20000, 1.0, 0.5);
+        Assertions.assertEquals(0, result2);
     }
 
     @Test
@@ -142,8 +154,24 @@ public class TravellerServiceTest {
     }
 
     @Test
+    void testModifyTraveller_Exception() {
+        when(travellerRepository.findById(1)).thenReturn(null);
+
+        assertThrows(TravellerNotFoundException.class, () ->
+                travellerService.modifyTravellerNameAndEmail(1,
+                        new TravellerModifyCommand("Little Tim", "tim@little.com")));
+    }
+
+    @Test
     void testDeleteTraveller_Success() {
         when(travellerRepository.findById(1)).thenReturn(traveller);
         travellerService.deleteTraveller(1);
+    }
+
+    @Test
+    void testDeleteTraveller_Exception() {
+        when(travellerRepository.findById(1)).thenReturn(null);
+        assertThrows(TravellerNotFoundException.class, () ->
+                travellerService.deleteTraveller(1));
     }
 }

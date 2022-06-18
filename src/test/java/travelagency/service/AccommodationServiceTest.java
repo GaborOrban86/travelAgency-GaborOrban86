@@ -12,8 +12,13 @@ import org.modelmapper.ModelMapper;
 import travelagency.domain.Accommodation;
 import travelagency.domain.Destination;
 import travelagency.domain.Travel;
-import travelagency.dto.*;
+import travelagency.domain.Traveller;
+import travelagency.dto.AccommodationCreateCommand;
+import travelagency.dto.AccommodationInfo;
+import travelagency.dto.AccommodationModifyCommand;
 import travelagency.exceptionhandling.AccommodationNotFoundException;
+import travelagency.exceptionhandling.TravelNotFoundException;
+import travelagency.exceptionhandling.TravelWithTravellersException;
 import travelagency.repository.AccommodationRepository;
 import travelagency.repository.TravelRepository;
 
@@ -44,6 +49,7 @@ public class AccommodationServiceTest {
 
     private Accommodation accommodation;
     private Travel travel;
+    private Traveller traveller;
 
     @BeforeEach
     void setUp() {
@@ -57,6 +63,15 @@ public class AccommodationServiceTest {
         travel.setDays(2);
         travel.setWholePrice(20000);
         travel.setDeleted(false);
+
+        traveller = new Traveller();
+        traveller.setName("Tim Travel");
+        traveller.setEmail("tim@travel.hu");
+        traveller.setBirthday(LocalDate.of(2000, Month.AUGUST, 1));
+        traveller.setAge(21);
+        traveller.setTravel(travel);
+        traveller.setAllFees(20000);
+        traveller.setDeleted(false);
 
         accommodation = new Accommodation();
         accommodation.setName("Hilton Hotel");
@@ -85,7 +100,17 @@ public class AccommodationServiceTest {
 
         Accommodation byId = accommodationRepository.findById(1);
         AccommodationInfo mappedAccommodation = modelMapper.map(byId, AccommodationInfo.class);
+
         Assertions.assertEquals(mappedAccommodation, result);
+    }
+
+    @Test
+    void testSaveAccommodation_Exception() {
+        when(travelRepository.findById(1)).thenReturn(null);
+
+        assertThrows(TravelNotFoundException.class, () ->
+                accommodationService.saveAccommodation((new AccommodationCreateCommand(
+                        "Hilton Hotel", "SOLO", "FULL", 1, 10000))));
     }
 
     @Test
@@ -98,7 +123,7 @@ public class AccommodationServiceTest {
     }
 
     @Test
-    void testAccommodationNotFound_Exception() {
+    void testFindAccommodationById_Exception() {
         when(accommodationRepository.findById(1)).thenReturn(null);
         assertThrows(AccommodationNotFoundException.class, () ->
                 accommodationService.modifyAccommodation(1, new AccommodationModifyCommand()));
@@ -116,8 +141,30 @@ public class AccommodationServiceTest {
     }
 
     @Test
+    void testModifyAccommodation_Exception() {
+        travel.getTravellers().add(traveller);
+        when(accommodationRepository.findById(1)).thenReturn(accommodation);
+
+        assertThrows(TravelWithTravellersException.class, () ->
+                accommodationService.modifyAccommodation(1, new AccommodationModifyCommand(
+                        "Hilltop Hotel", "FAMILY", "FULL", 15000)));
+    }
+
+    @Test
     void testDeleteAccommodation_Success() {
         when(accommodationRepository.findById(1)).thenReturn(accommodation);
         accommodationService.deleteAccommodation(1);
+    }
+
+    @Test
+    void testDeleteAccommodation_Exception() {
+        when(accommodationRepository.findById(1)).thenReturn(null);
+        assertThrows(AccommodationNotFoundException.class, () ->
+                accommodationService.deleteAccommodation(1));
+
+        accommodation.getTravel().getTravellers().add(traveller);
+        when(accommodationRepository.findById(1)).thenReturn(accommodation);
+        assertThrows(TravelWithTravellersException.class, () ->
+                accommodationService.deleteAccommodation(1));
     }
 }

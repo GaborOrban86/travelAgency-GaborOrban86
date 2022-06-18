@@ -28,10 +28,10 @@ public class TravellerService {
     private final ModelMapper modelMapper;
 
     @Value("${discount.baby}")
-    private Float babyDiscount;
+    private double babyDiscount;
 
     @Value("${discount.child}")
-    private Float childDiscount;
+    private double childDiscount;
 
     public TravellerService(TravellerRepository travellerRepository, TravelRepository travelRepository, ModelMapper modelMapper) {
         this.travellerRepository = travellerRepository;
@@ -55,7 +55,7 @@ public class TravellerService {
         toSave.setBirthday(command.getBirthday());
         toSave.setAge(ChronoUnit.YEARS.between(command.getBirthday(), LocalDate.now()));
         toSave.setTravel(travelForTraveller);
-        toSave.setAllFees(travellerFeesSetter(toSave.getAge(), travelForTraveller.getWholePrice()));
+        toSave.setAllFees(travellerFeesSetter(toSave.getAge(), travelForTraveller.getWholePrice(), babyDiscount, childDiscount));
 
         toSave.setTravel(travelForTraveller);
 
@@ -107,12 +107,12 @@ public class TravellerService {
     }
 
 
-    public int travellerFeesSetter(long age, int wholePrice) {
+    public int travellerFeesSetter(long age, int wholePrice, double baby, double child) {
         double result = wholePrice;
         if (age <= 4) {
-            result = wholePrice - (wholePrice * babyDiscount);
+            result = wholePrice - (wholePrice * baby);
         } else if (age <= 12) {
-            result = wholePrice - (wholePrice * childDiscount);
+            result = wholePrice - (wholePrice * child);
         }
 
         return (int) result;

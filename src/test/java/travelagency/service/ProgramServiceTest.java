@@ -9,14 +9,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
-import travelagency.domain.Accommodation;
-import travelagency.domain.Destination;
-import travelagency.domain.Program;
-import travelagency.domain.Travel;
+import travelagency.domain.*;
 import travelagency.dto.ProgramCreateCommand;
 import travelagency.dto.ProgramInfo;
 import travelagency.dto.ProgramModifyCommand;
 import travelagency.exceptionhandling.ProgramNotFoundException;
+import travelagency.exceptionhandling.TravelNotFoundException;
+import travelagency.exceptionhandling.TravelWithTravellersException;
 import travelagency.repository.ProgramRepository;
 import travelagency.repository.TravelRepository;
 
@@ -47,6 +46,7 @@ public class ProgramServiceTest {
 
     private Program program;
     private Travel travel;
+    private Traveller traveller;
 
     @BeforeEach
     void setUp() {
@@ -60,6 +60,15 @@ public class ProgramServiceTest {
         travel.setDays(2);
         travel.setWholePrice(20000);
         travel.setDeleted(false);
+
+        traveller = new Traveller();
+        traveller.setName("Tim Travel");
+        traveller.setEmail("tim@travel.hu");
+        traveller.setBirthday(LocalDate.of(2000, Month.AUGUST, 1));
+        traveller.setAge(21);
+        traveller.setTravel(travel);
+        traveller.setAllFees(20000);
+        traveller.setDeleted(false);
 
         program = new Program();
         program.setName("Hide and Seek");
@@ -94,6 +103,15 @@ public class ProgramServiceTest {
     }
 
     @Test
+    void testSaveProgram_Exception() {
+        when(travelRepository.findById(1)).thenReturn(null);
+
+        assertThrows(TravelNotFoundException.class, () ->
+                programService.saveProgram((new ProgramCreateCommand(
+                        "Hide and Seek", "It's a good game", "Guide Richie", 5000, 1))));
+    }
+
+    @Test
     void testFindProgramById_Success() {
         when(programRepository.findById(1)).thenReturn(program);
 
@@ -121,8 +139,30 @@ public class ProgramServiceTest {
     }
 
     @Test
+    void testModifyProgram_Exception() {
+        travel.getTravellers().add(traveller);
+        when(programRepository.findById(1)).thenReturn(program);
+
+        assertThrows(TravelWithTravellersException.class, () ->
+                programService.modifyProgram(1, new ProgramModifyCommand(
+                        "name", "description", "guide", 1)));
+    }
+
+    @Test
     void testDeleteProgram_Success() {
         when(programRepository.findById(1)).thenReturn(program);
         programService.deleteProgram(1);
+    }
+
+    @Test
+    void testDeleteProgram_Exception() {
+        when(programRepository.findById(1)).thenReturn(null);
+        assertThrows(ProgramNotFoundException.class, () ->
+                programService.deleteProgram(1));
+
+        program.getTravel().getTravellers().add(traveller);
+        when(programRepository.findById(1)).thenReturn(program);
+        assertThrows(TravelWithTravellersException.class, () ->
+                programService.deleteProgram(1));
     }
 }
