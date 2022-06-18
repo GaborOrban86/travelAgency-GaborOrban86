@@ -52,34 +52,8 @@ public class AccommodationServiceTest {
     private Traveller traveller;
 
     @BeforeEach
-    void setUp() {
-        travel = new Travel();
-        travel.setDestination(new Destination(1, "Naples", 20000));
-        travel.setAccommodation(accommodation);
-        travel.setStartDate(LocalDate.of(2022, Month.JULY, 10));
-        travel.setEndDate(LocalDate.of(2022, Month.JULY, 12));
-        travel.setPrograms(new ArrayList<>());
-        travel.setTravellers(new ArrayList<>());
-        travel.setDays(2);
-        travel.setWholePrice(20000);
-        travel.setDeleted(false);
-
-        traveller = new Traveller();
-        traveller.setName("Tim Travel");
-        traveller.setEmail("tim@travel.hu");
-        traveller.setBirthday(LocalDate.of(2000, Month.AUGUST, 1));
-        traveller.setAge(21);
-        traveller.setTravel(travel);
-        traveller.setAllFees(20000);
-        traveller.setDeleted(false);
-
-        accommodation = new Accommodation();
-        accommodation.setName("Hilton Hotel");
-        accommodation.setType("SOLO");
-        accommodation.setCatering("FULL");
-        accommodation.setTravel(travel);
-        accommodation.setPrice(10000);
-        accommodation.setDeleted(false);
+    void start() {
+        setUp();
     }
 
     @Test
@@ -166,5 +140,36 @@ public class AccommodationServiceTest {
         when(accommodationRepository.findById(1)).thenReturn(accommodation);
         assertThrows(TravelWithTravellersException.class, () ->
                 accommodationService.deleteAccommodation(1));
+    }
+
+
+    public void setUp() {
+        travel = new Travel();
+        travel.setDestination(new Destination(1, "Naples", 20000));
+        travel.setAccommodation(accommodation);
+        travel.setStartDate(LocalDate.of(2022, Month.JULY, 10));
+        travel.setEndDate(LocalDate.of(2022, Month.JULY, 12));
+        travel.setPrograms(new ArrayList<>());
+        travel.setTravellers(new ArrayList<>());
+        travel.setDays(2);
+        travel.setWholePrice(20000);
+        travel.setDeleted(false);
+
+        traveller = new Traveller();
+        traveller.setName("Tim Travel");
+        traveller.setEmail("tim@travel.hu");
+        traveller.setBirthday(LocalDate.of(2000, Month.AUGUST, 1));
+        traveller.setAge(21);
+        traveller.setTravel(travel);
+        traveller.setAllFees(20000);
+        traveller.setDeleted(false);
+
+        accommodation = new Accommodation();
+        accommodation.setName("Hilton Hotel");
+        accommodation.setType("SOLO");
+        accommodation.setCatering("FULL");
+        accommodation.setTravel(travel);
+        accommodation.setPrice(10000);
+        accommodation.setDeleted(false);
     }
 }

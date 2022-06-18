@@ -81,8 +81,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<List<ValidationError>> handleTravelWithTravellersException(
             TravelWithTravellersException exception) {
         ValidationError validationError = new ValidationError("travel",
-                "You can't put, modify or delete accommodation or program if you already put " +
-                        "travellers into the travel!");
+                "You can't modify the travel or put, modify or delete accommodation or program " +
+                        "if you already put travellers into the travel!");
         return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
     }
 }

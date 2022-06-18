@@ -45,7 +45,7 @@ public class AccommodationControllerIT {
     }
 
     @Test
-    void testGetTravelById_BadRequest() {
+    void testGetAccommodationById_BadRequest() {
         ResponseEntity<String> response = restTemplate.getForEntity("/api/accommodations/10", String.class);
         AssertionsForClassTypes.assertThat(response.getStatusCodeValue()).isEqualTo(400);
     }

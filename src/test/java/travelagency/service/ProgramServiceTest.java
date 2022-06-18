@@ -49,36 +49,9 @@ public class ProgramServiceTest {
     private Traveller traveller;
 
     @BeforeEach
-    void setUp() {
-        travel = new Travel();
-        travel.setDestination(new Destination(1, "Naples", 20000));
-        travel.setAccommodation(new Accommodation());
-        travel.setStartDate(LocalDate.of(2022, Month.JULY, 10));
-        travel.setEndDate(LocalDate.of(2022, Month.JULY, 12));
-        travel.setPrograms(new ArrayList<>());
-        travel.setTravellers(new ArrayList<>());
-        travel.setDays(2);
-        travel.setWholePrice(20000);
-        travel.setDeleted(false);
-
-        traveller = new Traveller();
-        traveller.setName("Tim Travel");
-        traveller.setEmail("tim@travel.hu");
-        traveller.setBirthday(LocalDate.of(2000, Month.AUGUST, 1));
-        traveller.setAge(21);
-        traveller.setTravel(travel);
-        traveller.setAllFees(20000);
-        traveller.setDeleted(false);
-
-        program = new Program();
-        program.setName("Hide and Seek");
-        program.setDescription("It's a good game");
-        program.setGuide("Guide Richie");
-        program.setPrice(5000);
-        program.setTravel(travel);
-        program.setDeleted(false);
+    void start() {
+        setUp();
     }
-
 
     @Test
     void testListFindAll_EmptyList() {
@@ -164,5 +137,35 @@ public class ProgramServiceTest {
         when(programRepository.findById(1)).thenReturn(program);
         assertThrows(TravelWithTravellersException.class, () ->
                 programService.deleteProgram(1));
+    }
+
+    public void setUp() {
+        travel = new Travel();
+        travel.setDestination(new Destination(1, "Naples", 20000));
+        travel.setAccommodation(new Accommodation());
+        travel.setStartDate(LocalDate.of(2022, Month.JULY, 10));
+        travel.setEndDate(LocalDate.of(2022, Month.JULY, 12));
+        travel.setPrograms(new ArrayList<>());
+        travel.setTravellers(new ArrayList<>());
+        travel.setDays(2);
+        travel.setWholePrice(20000);
+        travel.setDeleted(false);
+
+        traveller = new Traveller();
+        traveller.setName("Tim Travel");
+        traveller.setEmail("tim@travel.hu");
+        traveller.setBirthday(LocalDate.of(2000, Month.AUGUST, 1));
+        traveller.setAge(21);
+        traveller.setTravel(travel);
+        traveller.setAllFees(20000);
+        traveller.setDeleted(false);
+
+        program = new Program();
+        program.setName("Hide and Seek");
+        program.setDescription("It's a good game");
+        program.setGuide("Guide Richie");
+        program.setPrice(5000);
+        program.setTravel(travel);
+        program.setDeleted(false);
     }
 }

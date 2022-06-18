@@ -15,6 +15,7 @@ import travelagency.dto.TravelInfo;
 import travelagency.dto.TravelModifyCommand;
 import travelagency.exceptionhandling.DestinationNotFoundException;
 import travelagency.exceptionhandling.TravelNotFoundException;
+import travelagency.exceptionhandling.TravelWithTravellersException;
 import travelagency.repository.DestinationRepository;
 import travelagency.repository.TravelRepository;
 
@@ -49,46 +50,8 @@ public class TravelServiceTest {
     private Program program;
 
     @BeforeEach
-    void setUp() {
-        destination = new Destination();
-        destination.setId(1);
-        destination.setName("Naples");
-        destination.setPrice(20000);
-
-        travel = new Travel();
-        travel.setDestination(destination);
-        travel.setStartDate(LocalDate.of(2022, Month.JULY, 10));
-        travel.setEndDate(LocalDate.of(2022, Month.JULY, 12));
-        travel.setPrograms(new ArrayList<>());
-        travel.setTravellers(new ArrayList<>());
-        travel.setDays(2);
-        travel.setWholePrice(40000);
-        travel.setDeleted(false);
-
-        traveller = new Traveller();
-        traveller.setName("Tim Travel");
-        traveller.setEmail("tim@travel.hu");
-        traveller.setBirthday(LocalDate.of(2000, Month.AUGUST, 1));
-        traveller.setAge(21);
-        traveller.setTravel(travel);
-        traveller.setAllFees(20000);
-        traveller.setDeleted(false);
-
-        accommodation = new Accommodation();
-        accommodation.setName("Hilton Hotel");
-        accommodation.setType("SOLO");
-        accommodation.setCatering("FULL");
-        accommodation.setTravel(travel);
-        accommodation.setPrice(10000);
-        accommodation.setDeleted(false);
-
-        program = new Program();
-        program.setName("Hide and Seek");
-        program.setDescription("It's a good game");
-        program.setGuide("Guide Richie");
-        program.setPrice(5000);
-        program.setTravel(travel);
-        program.setDeleted(false);
+    void start() {
+        setUp();
     }
 
     @Test
@@ -150,9 +113,12 @@ public class TravelServiceTest {
 
     @Test
     void testModifyTravel_Exception() {
-        when(travelRepository.findById(1)).thenReturn(null);
+        travel.setAccommodation(accommodation);
+        travel.getPrograms().add(program);
+        travel.getTravellers().add(traveller);
+        when(travelRepository.findById(1)).thenReturn(travel);
 
-        assertThrows(TravelNotFoundException.class, () ->
+        assertThrows(TravelWithTravellersException.class, () ->
                 travelService.updateTravelDates(1, new TravelModifyCommand(LocalDate.of(2022, Month.JULY,
                         10), LocalDate.of(2022, Month.JULY, 11))));
     }
@@ -172,5 +138,47 @@ public class TravelServiceTest {
         when(travelRepository.findById(1)).thenReturn(null);
         assertThrows(TravelNotFoundException.class, () ->
                 travelService.deleteTravel(1));
+    }
+
+    public void setUp() {
+        destination = new Destination();
+        destination.setId(1);
+        destination.setName("Naples");
+        destination.setPrice(20000);
+
+        travel = new Travel();
+        travel.setDestination(destination);
+        travel.setStartDate(LocalDate.of(2022, Month.JULY, 10));
+        travel.setEndDate(LocalDate.of(2022, Month.JULY, 12));
+        travel.setPrograms(new ArrayList<>());
+        travel.setTravellers(new ArrayList<>());
+        travel.setDays(2);
+        travel.setWholePrice(40000);
+        travel.setDeleted(false);
+
+        traveller = new Traveller();
+        traveller.setName("Tim Travel");
+        traveller.setEmail("tim@travel.hu");
+        traveller.setBirthday(LocalDate.of(2000, Month.AUGUST, 1));
+        traveller.setAge(21);
+        traveller.setTravel(travel);
+        traveller.setAllFees(20000);
+        traveller.setDeleted(false);
+
+        accommodation = new Accommodation();
+        accommodation.setName("Hilton Hotel");
+        accommodation.setType("SOLO");
+        accommodation.setCatering("FULL");
+        accommodation.setTravel(travel);
+        accommodation.setPrice(10000);
+        accommodation.setDeleted(false);
+
+        program = new Program();
+        program.setName("Hide and Seek");
+        program.setDescription("It's a good game");
+        program.setGuide("Guide Richie");
+        program.setPrice(5000);
+        program.setTravel(travel);
+        program.setDeleted(false);
     }
 }

@@ -47,44 +47,8 @@ public class TravellerServiceTest {
     private Travel travel;
 
     @BeforeEach
-    void setUp() {
-        Accommodation accommodation = new Accommodation();
-        accommodation.setName("Hilton Hotel");
-        accommodation.setType("SOLO");
-        accommodation.setCatering("FULL");
-        accommodation.setTravel(travel);
-        accommodation.setPrice(10000);
-        accommodation.setDeleted(false);
-
-        Program program = new Program();
-        program.setName("Hide and Seek");
-        program.setDescription("It's a good game");
-        program.setGuide("Guide Richie");
-        program.setPrice(5000);
-        program.setTravel(travel);
-        program.setDeleted(false);
-
-        travel = new Travel();
-        travel.setDestination(new Destination(1, "Naples", 20000));
-        travel.setAccommodation(accommodation);
-        travel.setStartDate(LocalDate.of(2022, Month.JULY, 10));
-        travel.setEndDate(LocalDate.of(2022, Month.JULY, 12));
-        List<Program> programs = new ArrayList<>();
-        programs.add(program);
-        travel.setPrograms(programs);
-        travel.setTravellers(new ArrayList<>());
-        travel.setDays(2);
-        travel.setWholePrice(20000);
-        travel.setDeleted(false);
-
-        traveller = new Traveller();
-        traveller.setName("Tim Travel");
-        traveller.setEmail("tim@travel.hu");
-        traveller.setBirthday(LocalDate.of(2000, Month.AUGUST, 1));
-        traveller.setAge(21);
-        traveller.setTravel(travel);
-        traveller.setAllFees(20000);
-        traveller.setDeleted(false);
+    void start() {
+        setUp();
     }
 
     @Test
@@ -134,7 +98,7 @@ public class TravellerServiceTest {
     }
 
     @Test
-    void testTravellerFeesSetter() {
+    void testTravellerFeesSetter_Success() {
         int result = travellerService.travellerFeesSetter(12, 20000, 1.0, 0.5);
         Assertions.assertEquals(10000, result);
 
@@ -173,5 +137,45 @@ public class TravellerServiceTest {
         when(travellerRepository.findById(1)).thenReturn(null);
         assertThrows(TravellerNotFoundException.class, () ->
                 travellerService.deleteTraveller(1));
+    }
+
+    public void setUp() {
+        Accommodation accommodation = new Accommodation();
+        accommodation.setName("Hilton Hotel");
+        accommodation.setType("SOLO");
+        accommodation.setCatering("FULL");
+        accommodation.setTravel(travel);
+        accommodation.setPrice(10000);
+        accommodation.setDeleted(false);
+
+        Program program = new Program();
+        program.setName("Hide and Seek");
+        program.setDescription("It's a good game");
+        program.setGuide("Guide Richie");
+        program.setPrice(5000);
+        program.setTravel(travel);
+        program.setDeleted(false);
+
+        travel = new Travel();
+        travel.setDestination(new Destination(1, "Naples", 20000));
+        travel.setAccommodation(accommodation);
+        travel.setStartDate(LocalDate.of(2022, Month.JULY, 10));
+        travel.setEndDate(LocalDate.of(2022, Month.JULY, 12));
+        List<Program> programs = new ArrayList<>();
+        programs.add(program);
+        travel.setPrograms(programs);
+        travel.setTravellers(new ArrayList<>());
+        travel.setDays(2);
+        travel.setWholePrice(20000);
+        travel.setDeleted(false);
+
+        traveller = new Traveller();
+        traveller.setName("Tim Travel");
+        traveller.setEmail("tim@travel.hu");
+        traveller.setBirthday(LocalDate.of(2000, Month.AUGUST, 1));
+        traveller.setAge(21);
+        traveller.setTravel(travel);
+        traveller.setAllFees(20000);
+        traveller.setDeleted(false);
     }
 }

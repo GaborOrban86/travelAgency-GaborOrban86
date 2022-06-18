@@ -10,6 +10,7 @@ import travelagency.dto.TravelInfo;
 import travelagency.dto.TravelModifyCommand;
 import travelagency.exceptionhandling.DestinationNotFoundException;
 import travelagency.exceptionhandling.TravelNotFoundException;
+import travelagency.exceptionhandling.TravelWithTravellersException;
 import travelagency.repository.DestinationRepository;
 import travelagency.repository.TravelRepository;
 
@@ -73,6 +74,9 @@ public class TravelService {
         Travel travelFound = travelRepository.findById(id);
         if (travelFound == null) {
             throw new TravelNotFoundException(id);
+        }
+        if (!travelFound.getTravellers().isEmpty()){
+            throw new TravelWithTravellersException();
         }
         travelFound.setStartDate(command.getStartDate());
         travelFound.setEndDate(command.getEndDate());
