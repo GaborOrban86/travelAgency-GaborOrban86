@@ -1,11 +1,9 @@
 package travelagency.service;
 
 import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
@@ -37,12 +35,9 @@ public class TravelServiceTest {
     @Mock
     DestinationRepository destinationRepository;
 
-    @Mock
-    ModelMapper modelMapper;
+    private final ModelMapper modelMapper = new ModelMapper();
 
-    @InjectMocks
-    TravelService travelService;
-
+    private TravelService travelService;
     private Travel travel;
     private Destination destination;
     private Traveller traveller;
@@ -72,7 +67,7 @@ public class TravelServiceTest {
 
         Travel byId = travelRepository.findById(1);
         TravelInfo mappedTravel = modelMapper.map(byId, TravelInfo.class);
-        Assertions.assertEquals(mappedTravel, result);
+        assertEquals(mappedTravel, result);
     }
 
     @Test
@@ -90,7 +85,7 @@ public class TravelServiceTest {
         TravelInfo infoFromTravel = modelMapper.map(travel, TravelInfo.class);
         TravelInfo result = travelService.findTravelById(1);
 
-        Assertions.assertEquals(infoFromTravel, result);
+        assertEquals(infoFromTravel, result);
     }
 
     @Test
@@ -141,6 +136,7 @@ public class TravelServiceTest {
     }
 
     public void setUp() {
+        travelService = new TravelService(travelRepository, destinationRepository, modelMapper);
         destination = new Destination();
         destination.setId(1);
         destination.setName("Naples");
@@ -154,6 +150,7 @@ public class TravelServiceTest {
         travel.setTravellers(new ArrayList<>());
         travel.setDays(2);
         travel.setWholePrice(40000);
+        travel.setFullIncome(0);
         travel.setDeleted(false);
 
         traveller = new Traveller();

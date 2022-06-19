@@ -1,5 +1,7 @@
 package travelagency.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/travels")
+@Tag(name = "Operations on travels")
 @Slf4j
 public class TravelController {
 
@@ -23,6 +26,7 @@ public class TravelController {
     }
 
     @PostMapping
+    @Operation(summary = "Save travel", description = "Save travel.")
     @ResponseStatus(HttpStatus.CREATED)
     public TravelInfo save(@Valid @RequestBody TravelCreateCommand command) {
         log.info("Http request, POST /api/travels, body: " + command.toString());
@@ -30,6 +34,7 @@ public class TravelController {
     }
 
     @GetMapping("/{travelId}")
+    @Operation(summary = "Find travel by id", description = "Find travel by id.")
     @ResponseStatus(HttpStatus.OK)
     public TravelInfo getTravelById(@PathVariable("travelId") Integer travelId) {
         log.info("Http request, GET /api/travels/{travelId}, parameter: " + travelId);
@@ -37,12 +42,14 @@ public class TravelController {
     }
 
     @GetMapping
+    @Operation(summary = "List all travels", description = "List all travels.")
     @ResponseStatus(HttpStatus.OK)
     public List<TravelInfo> findAll() {
         return travelService.findAllTravels();
     }
 
     @PutMapping("/{travelId}")
+    @Operation(summary = "Modify travel dates", description = "Modify travel dates.")
     @ResponseStatus(HttpStatus.OK)
     public TravelInfo modifyTravel(@PathVariable("travelId") Integer travelId,
                                    @RequestBody @Valid TravelModifyCommand updateCommand) {
@@ -51,6 +58,7 @@ public class TravelController {
     }
 
     @DeleteMapping("/{travelId}")
+    @Operation(summary = "Delete travel", description = "Delete travel.")
     @ResponseStatus(HttpStatus.OK)
     public void deleteTravel(@PathVariable("travelId") Integer travelId) {
         log.info("Http request, DELETE /api/travels/{travelId}, parameter: "

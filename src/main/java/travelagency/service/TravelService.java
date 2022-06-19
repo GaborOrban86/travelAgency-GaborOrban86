@@ -28,7 +28,8 @@ public class TravelService {
     private final DestinationRepository destinationRepository;
     private final ModelMapper modelMapper;
 
-    public TravelService(TravelRepository travelRepository, DestinationRepository destinationRepository, ModelMapper modelMapper) {
+    public TravelService(TravelRepository travelRepository, DestinationRepository destinationRepository,
+                         ModelMapper modelMapper) {
         this.travelRepository = travelRepository;
         this.destinationRepository = destinationRepository;
         this.modelMapper = modelMapper;
@@ -48,7 +49,7 @@ public class TravelService {
         toSave.setPrograms(new ArrayList<>());
         toSave.setDays((int) DAYS.between(command.getStartDate(), command.getEndDate()));
         toSave.setWholePrice(toSave.getDestination().getPrice() * toSave.getDays());
-
+        toSave.setFullIncome(0);
         System.out.println(toSave);
         Travel saved = travelRepository.save(toSave);
         return modelMapper.map(saved, TravelInfo.class);
@@ -75,7 +76,7 @@ public class TravelService {
         if (travelFound == null) {
             throw new TravelNotFoundException(id);
         }
-        if (!travelFound.getTravellers().isEmpty()){
+        if (!travelFound.getTravellers().isEmpty()) {
             throw new TravelWithTravellersException();
         }
         travelFound.setStartDate(command.getStartDate());
@@ -124,7 +125,6 @@ public class TravelService {
 
         travelFound.getTravellers().clear();
         travelFound.getPrograms().clear();
-
         travelRepository.delete(travelFound);
     }
 }

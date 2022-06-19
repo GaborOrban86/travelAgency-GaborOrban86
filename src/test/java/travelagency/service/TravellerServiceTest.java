@@ -1,11 +1,9 @@
 package travelagency.service;
 
 import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
@@ -37,12 +35,9 @@ public class TravellerServiceTest {
     @Mock
     TravelRepository travelRepository;
 
-    @Mock
-    ModelMapper modelMapper;
+    private final ModelMapper modelMapper = new ModelMapper();
 
-    @InjectMocks
-    TravellerService travellerService;
-
+    private TravellerService travellerService;
     private Traveller traveller;
     private Travel travel;
 
@@ -70,7 +65,7 @@ public class TravellerServiceTest {
 
         Traveller byId = travellerRepository.findById(1);
         TravellerInfo mappedTraveller = modelMapper.map(byId, TravellerInfo.class);
-        Assertions.assertEquals(mappedTraveller, result);
+        assertEquals(mappedTraveller, result);
     }
 
     @Test
@@ -87,7 +82,7 @@ public class TravellerServiceTest {
         when(travellerRepository.findById(1)).thenReturn(traveller);
         TravellerInfo infoFromTraveller = modelMapper.map(traveller, TravellerInfo.class);
         TravellerInfo result = travellerService.findTravellerById(1);
-        Assertions.assertEquals(infoFromTraveller, result);
+        assertEquals(infoFromTraveller, result);
     }
 
     @Test
@@ -100,10 +95,10 @@ public class TravellerServiceTest {
     @Test
     void testTravellerFeesSetter_Success() {
         int result = travellerService.travellerFeesSetter(12, 20000, 1.0, 0.5);
-        Assertions.assertEquals(10000, result);
+        assertEquals(10000, result);
 
         int result2 = travellerService.travellerFeesSetter(2, 20000, 1.0, 0.5);
-        Assertions.assertEquals(0, result2);
+        assertEquals(0, result2);
     }
 
     @Test
@@ -140,6 +135,7 @@ public class TravellerServiceTest {
     }
 
     public void setUp() {
+        travellerService = new TravellerService(travellerRepository, travelRepository, modelMapper);
         Accommodation accommodation = new Accommodation();
         accommodation.setName("Hilton Hotel");
         accommodation.setType("SOLO");
@@ -167,6 +163,7 @@ public class TravellerServiceTest {
         travel.setTravellers(new ArrayList<>());
         travel.setDays(2);
         travel.setWholePrice(20000);
+        travel.setFullIncome(0);
         travel.setDeleted(false);
 
         traveller = new Traveller();

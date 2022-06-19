@@ -5,8 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import travelagency.domain.Accommodation;
 import travelagency.domain.Travel;
-import travelagency.domain.enums.AccommodationCatering;
-import travelagency.domain.enums.AccommodationType;
 import travelagency.dto.AccommodationCreateCommand;
 import travelagency.dto.AccommodationInfo;
 import travelagency.dto.AccommodationModifyCommand;
@@ -29,7 +27,8 @@ public class AccommodationService {
     TravelRepository travelRepository;
     ModelMapper modelMapper;
 
-    public AccommodationService(AccommodationRepository accommodationRepository, TravelRepository travelRepository, ModelMapper modelMapper) {
+    public AccommodationService(AccommodationRepository accommodationRepository, TravelRepository travelRepository,
+                                ModelMapper modelMapper) {
         this.accommodationRepository = accommodationRepository;
         this.travelRepository = travelRepository;
         this.modelMapper = modelMapper;

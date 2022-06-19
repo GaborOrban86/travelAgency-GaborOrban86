@@ -17,5 +17,6 @@ public class TravelInfo {
     private List<TravellerInfo> travellers;
     private List<ProgramInfo> programs;
     private Integer days;
+    private Integer fullIncome;
     private Integer wholePrice;
 }

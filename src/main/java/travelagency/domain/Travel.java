@@ -17,9 +17,11 @@ public class Travel {
     private Integer id;
 
     @OneToOne
+    @JoinColumn(name = "destination_id")
     private Destination destination;
 
     @OneToOne
+    @JoinColumn(name = "accommodation_id")
     private Accommodation accommodation;
 
     private LocalDate startDate;
@@ -33,5 +35,6 @@ public class Travel {
 
     private Integer days;
     private Integer wholePrice;
+    private Integer fullIncome;
     private boolean deleted;
 }

@@ -1,11 +1,9 @@
 package travelagency.service;
 
 import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
@@ -41,12 +39,9 @@ public class AccommodationServiceTest {
     @Mock
     TravelRepository travelRepository;
 
-    @Mock
-    ModelMapper modelMapper;
+    private final ModelMapper modelMapper = new ModelMapper();
 
-    @InjectMocks
-    AccommodationService accommodationService;
-
+    private AccommodationService accommodationService;
     private Accommodation accommodation;
     private Travel travel;
     private Traveller traveller;
@@ -75,7 +70,7 @@ public class AccommodationServiceTest {
         Accommodation byId = accommodationRepository.findById(1);
         AccommodationInfo mappedAccommodation = modelMapper.map(byId, AccommodationInfo.class);
 
-        Assertions.assertEquals(mappedAccommodation, result);
+        assertEquals(mappedAccommodation, result);
     }
 
     @Test
@@ -93,7 +88,7 @@ public class AccommodationServiceTest {
 
         AccommodationInfo infoFromAccommodation = modelMapper.map(accommodation, AccommodationInfo.class);
         AccommodationInfo result = accommodationService.findAccommodationById(1);
-        Assertions.assertEquals(infoFromAccommodation, result);
+        assertEquals(infoFromAccommodation, result);
     }
 
     @Test
@@ -144,6 +139,7 @@ public class AccommodationServiceTest {
 
 
     public void setUp() {
+        accommodationService = new AccommodationService(accommodationRepository, travelRepository, modelMapper);
         travel = new Travel();
         travel.setDestination(new Destination(1, "Naples", 20000));
         travel.setAccommodation(accommodation);
@@ -153,6 +149,7 @@ public class AccommodationServiceTest {
         travel.setTravellers(new ArrayList<>());
         travel.setDays(2);
         travel.setWholePrice(20000);
+        travel.setFullIncome(0);
         travel.setDeleted(false);
 
         traveller = new Traveller();

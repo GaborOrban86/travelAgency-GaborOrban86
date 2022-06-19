@@ -33,7 +33,8 @@ public class TravellerService {
     @Value("${discount.child}")
     private double childDiscount;
 
-    public TravellerService(TravellerRepository travellerRepository, TravelRepository travelRepository, ModelMapper modelMapper) {
+    public TravellerService(TravellerRepository travellerRepository, TravelRepository travelRepository,
+                            ModelMapper modelMapper) {
         this.travellerRepository = travellerRepository;
         this.travelRepository = travelRepository;
         this.modelMapper = modelMapper;
@@ -55,12 +56,13 @@ public class TravellerService {
         toSave.setBirthday(command.getBirthday());
         toSave.setAge(ChronoUnit.YEARS.between(command.getBirthday(), LocalDate.now()));
         toSave.setTravel(travelForTraveller);
-        toSave.setAllFees(travellerFeesSetter(toSave.getAge(), travelForTraveller.getWholePrice(), babyDiscount, childDiscount));
+        toSave.setAllFees(travellerFeesSetter(toSave.getAge(), travelForTraveller.getWholePrice(),
+                babyDiscount, childDiscount));
 
         toSave.setTravel(travelForTraveller);
 
         travelForTraveller.getTravellers().add(toSave);
-
+        travelForTraveller.setFullIncome(travelForTraveller.getFullIncome() + toSave.getAllFees());
 
         Traveller saved = travellerRepository.save(toSave);
         return modelMapper.map(saved, TravellerInfo.class);
@@ -101,6 +103,7 @@ public class TravellerService {
         }
         Travel travelOfTraveller = travellerFound.getTravel();
         travelOfTraveller.getTravellers().remove(travellerFound);
+        travelOfTraveller.setFullIncome(travelOfTraveller.getFullIncome() - travellerFound.getAllFees());
         travellerFound.setTravel(null);
         travellerFound.setAllFees(0);
         travellerRepository.delete(travellerFound);

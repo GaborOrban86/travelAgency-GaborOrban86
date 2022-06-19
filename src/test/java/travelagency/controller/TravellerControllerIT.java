@@ -1,6 +1,5 @@
 package travelagency.controller;
 
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +46,7 @@ public class TravellerControllerIT {
         ResponseEntity<TravellerInfo[]> response =
                 restTemplate.getForEntity("/api/travellers", TravellerInfo[].class);
         List<TravellerInfo> travellers = List.of(Objects.requireNonNull(response.getBody()));
-        AssertionsForClassTypes.assertThat(travellers.size()).isEqualTo(1);
+        assertThat(travellers.size()).isEqualTo(1);
     }
 
     @Test
@@ -55,7 +54,7 @@ public class TravellerControllerIT {
         ResponseEntity<String> response = restTemplate.postForEntity("/api/travellers",
                 new TravellerCreateCommand("Pityu", "pitpityuhJu",
                         LocalDate.of(1986, Month.JUNE, 9), 1), String.class);
-        AssertionsForClassTypes.assertThat(response.getStatusCodeValue()).isEqualTo(400);
+        assertThat(response.getStatusCodeValue()).isEqualTo(400);
     }
 
     @Test
@@ -78,7 +77,7 @@ public class TravellerControllerIT {
         ResponseEntity<String> response = restTemplate.postForEntity("/api/travellers",
                 new TravellerCreateCommand("Pityu", "pityu@pityu.hu",
                         LocalDate.of(1986, Month.JUNE, 9), 1), String.class);
-        AssertionsForClassTypes.assertThat(response.getStatusCodeValue()).isEqualTo(400);
+        assertThat(response.getStatusCodeValue()).isEqualTo(400);
     }
 
     @Test
@@ -116,6 +115,6 @@ public class TravellerControllerIT {
     @Test
     void testGetTravellerById_BadRequest() {
         ResponseEntity<String> response = restTemplate.getForEntity("/api/travellers/10", String.class);
-        AssertionsForClassTypes.assertThat(response.getStatusCodeValue()).isEqualTo(400);
+        assertThat(response.getStatusCodeValue()).isEqualTo(400);
     }
 }

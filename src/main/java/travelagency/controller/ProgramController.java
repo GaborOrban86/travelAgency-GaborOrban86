@@ -1,5 +1,7 @@
 package travelagency.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/programs")
+@Tag(name = "Operations on programs")
 @Slf4j
 public class ProgramController {
 
@@ -23,6 +26,7 @@ public class ProgramController {
     }
 
     @PostMapping
+    @Operation(summary = "Save program", description = "Save program.")
     @ResponseStatus(HttpStatus.CREATED)
     public ProgramInfo save(@Valid @RequestBody ProgramCreateCommand command) {
         log.info("Http request, POST /api/programs, body: " + command.toString());
@@ -30,6 +34,7 @@ public class ProgramController {
     }
 
     @GetMapping("/{programId}")
+    @Operation(summary = "Find program by id", description = "Find program by id.")
     @ResponseStatus(HttpStatus.OK)
     public ProgramInfo getProgramById(@PathVariable("programId") Integer programId) {
         log.info("Http request, GET /api/travels/{programId}, parameter: " + programId);
@@ -37,12 +42,14 @@ public class ProgramController {
     }
 
     @GetMapping
+    @Operation(summary = "List all programs", description = "List all programs.")
     @ResponseStatus(HttpStatus.OK)
     public List<ProgramInfo> findAll() {
         return programService.findAllPrograms();
     }
 
     @PutMapping("/{programId}")
+    @Operation(summary = "Modify program details", description = "Modify program details.")
     @ResponseStatus(HttpStatus.OK)
     public ProgramInfo modifyProgram(@PathVariable("programId") Integer programId,
                                      @RequestBody @Valid ProgramModifyCommand updateCommand) {
@@ -51,6 +58,7 @@ public class ProgramController {
     }
 
     @DeleteMapping("/{programId}")
+    @Operation(summary = "Delete program", description = "Delete program.")
     @ResponseStatus(HttpStatus.OK)
     public void deleteProgram(@PathVariable("programId") Integer programId) {
         log.info("Http request, DELETE /api/programs/{programId}, parameter: "

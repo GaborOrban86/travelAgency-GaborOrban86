@@ -4,9 +4,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import travelagency.TravelAgencyApp;
 
 @SpringBootTest(classes = TravelAgencyApp.class)
+@AutoConfigureTestDatabase
 public class TravelAgencyAppIT {
+
     @Test
     public void main() {
-        TravelAgencyApp.main(new String[] {});
+        TravelAgencyApp.main(new String[]{});
     }
 }

@@ -1,11 +1,9 @@
 package travelagency.service;
 
 import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
@@ -38,12 +36,9 @@ public class ProgramServiceTest {
     @Mock
     TravelRepository travelRepository;
 
-    @Mock
-    ModelMapper modelMapper;
+    private final ModelMapper modelMapper = new ModelMapper();
 
-    @InjectMocks
-    ProgramService programService;
-
+    private ProgramService programService;
     private Program program;
     private Travel travel;
     private Traveller traveller;
@@ -61,7 +56,6 @@ public class ProgramServiceTest {
 
     @Test
     void testSaveProgram_Success() {
-
         when(programRepository.save(program)).thenReturn(program);
         when(travelRepository.findById(1)).thenReturn(travel);
 
@@ -72,7 +66,7 @@ public class ProgramServiceTest {
 
         Program byId = programRepository.findById(1);
         ProgramInfo mappedProgram = modelMapper.map(byId, ProgramInfo.class);
-        Assertions.assertEquals(mappedProgram, result);
+        assertEquals(mappedProgram, result);
     }
 
     @Test
@@ -90,7 +84,7 @@ public class ProgramServiceTest {
 
         ProgramInfo infoFromProgram = modelMapper.map(program, ProgramInfo.class);
         ProgramInfo result = programService.findProgramById(1);
-        Assertions.assertEquals(infoFromProgram, result);
+        assertEquals(infoFromProgram, result);
     }
 
     @Test
@@ -140,6 +134,7 @@ public class ProgramServiceTest {
     }
 
     public void setUp() {
+        programService = new ProgramService(programRepository, travelRepository, modelMapper);
         travel = new Travel();
         travel.setDestination(new Destination(1, "Naples", 20000));
         travel.setAccommodation(new Accommodation());
@@ -149,6 +144,7 @@ public class ProgramServiceTest {
         travel.setTravellers(new ArrayList<>());
         travel.setDays(2);
         travel.setWholePrice(20000);
+        travel.setFullIncome(0);
         travel.setDeleted(false);
 
         traveller = new Traveller();

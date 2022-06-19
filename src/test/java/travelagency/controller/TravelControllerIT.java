@@ -1,7 +1,6 @@
 package travelagency.controller;
 
 
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +67,7 @@ public class TravelControllerIT {
         ResponseEntity<String> response = restTemplate.postForEntity("/api/travels",
                 new TravelCreateCommand(33, LocalDate.of(2022, Month.SEPTEMBER, 10),
                         LocalDate.of(2022, Month.SEPTEMBER, 12)), String.class);
-        AssertionsForClassTypes.assertThat(response.getStatusCodeValue()).isEqualTo(400);
+        assertThat(response.getStatusCodeValue()).isEqualTo(400);
     }
 
     @Test

@@ -1,6 +1,5 @@
 package travelagency.controller;
 
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureTestDatabase
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class ProgramControllerIT {
+
     @Autowired
     TestRestTemplate restTemplate;
 
@@ -46,7 +46,7 @@ public class ProgramControllerIT {
     @Test
     void testGetProgramById_BadRequest() {
         ResponseEntity<String> response = restTemplate.getForEntity("/api/programs/10", String.class);
-        AssertionsForClassTypes.assertThat(response.getStatusCodeValue()).isEqualTo(400);
+        assertThat(response.getStatusCodeValue()).isEqualTo(400);
     }
 
     @Test
@@ -74,7 +74,7 @@ public class ProgramControllerIT {
         ResponseEntity<String> response = restTemplate.postForEntity("/api/programs",
                 new ProgramCreateCommand("Hide and Seek", "Funny Game", "Peter Program",
                         12000, 1), String.class);
-        AssertionsForClassTypes.assertThat(response.getStatusCodeValue()).isEqualTo(400);
+        assertThat(response.getStatusCodeValue()).isEqualTo(400);
     }
 
     @Test

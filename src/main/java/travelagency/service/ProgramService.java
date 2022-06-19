@@ -25,7 +25,8 @@ public class ProgramService {
     TravelRepository travelRepository;
     ModelMapper modelMapper;
 
-    public ProgramService(ProgramRepository programRepository, TravelRepository travelRepository, ModelMapper modelMapper) {
+    public ProgramService(ProgramRepository programRepository, TravelRepository travelRepository,
+                          ModelMapper modelMapper) {
         this.programRepository = programRepository;
         this.travelRepository = travelRepository;
         this.modelMapper = modelMapper;

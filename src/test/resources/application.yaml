@@ -1,14 +1,3 @@
-spring:
-  datasource:
-    url: jdbc:h2:mem:testdb
-    username: og
-    password: og
-
-  jpa:
-    hibernate:
-      ddl-auto: none
-    show-sql: on
-
 discount:
   baby: 1.0
   child: 0.5

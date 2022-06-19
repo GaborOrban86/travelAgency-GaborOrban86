@@ -1,5 +1,7 @@
 package travelagency.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/accommodations")
+@Tag(name = "Operations on accommodations")
 @Slf4j
 public class AccommodationController {
 
@@ -23,6 +26,7 @@ public class AccommodationController {
     }
 
     @PostMapping
+    @Operation(summary = "Save accommodation", description = "Save accommodation.")
     @ResponseStatus(HttpStatus.CREATED)
     public AccommodationInfo save(@Valid @RequestBody AccommodationCreateCommand command) {
         log.info("Http request, POST /api/accommodations, body: " + command.toString());
@@ -30,6 +34,7 @@ public class AccommodationController {
     }
 
     @GetMapping("/{accommodationId}")
+    @Operation(summary = "Find accommodation by id", description = "Find accommodation by id.")
     @ResponseStatus(HttpStatus.OK)
     public AccommodationInfo getAccommodationById(@PathVariable("accommodationId") Integer accommodationId) {
         log.info("Http request, GET /api/travels/{accommodationId}, parameter: " + accommodationId);
@@ -37,12 +42,14 @@ public class AccommodationController {
     }
 
     @GetMapping
+    @Operation(summary = "List all accommodations", description = "List all accommodations.")
     @ResponseStatus(HttpStatus.OK)
     public List<AccommodationInfo> findAll() {
         return accommodationService.findAllAccommodations();
     }
 
     @PutMapping("/{accommodationId}")
+    @Operation(summary = "Modify accommodation details", description = "Modify accommodation details.")
     @ResponseStatus(HttpStatus.OK)
     public AccommodationInfo modifyAccommodation(@PathVariable("accommodationId") Integer accommodationId,
                                                  @RequestBody @Valid AccommodationModifyCommand updateCommand) {
@@ -51,6 +58,7 @@ public class AccommodationController {
     }
 
     @DeleteMapping("/{accommodationId}")
+    @Operation(summary = "Delete accommodation", description = "Delete accommodation.")
     @ResponseStatus(HttpStatus.OK)
     public void deleteAccommodation(@PathVariable("accommodationId") Integer accommodationId) {
         log.info("Http request, DELETE /api/accommodations/{accommodationId}, parameter: "
