@@ -3,8 +3,10 @@ CREATE TABLE accommodation (
     name varchar(255),
     type varchar(255),
     catering varchar(255),
-    travel_id integer,
-    price integer NOT NULL,
+    price integer,
     deleted boolean,
+    travel_id integer,
     PRIMARY KEY (id)
 );
+
+    ALTER TABLE accommodation ADD CONSTRAINT ac_travel FOREIGN KEY (travel_id) REFERENCES travel (id);

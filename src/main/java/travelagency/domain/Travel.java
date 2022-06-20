@@ -20,8 +20,7 @@ public class Travel {
     @JoinColumn(name = "destination_id")
     private Destination destination;
 
-    @OneToOne
-    @JoinColumn(name = "accommodation_id")
+    @OneToOne(mappedBy = "travel", fetch = FetchType.LAZY)
     private Accommodation accommodation;
 
     private LocalDate startDate;

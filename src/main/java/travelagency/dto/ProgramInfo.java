@@ -10,5 +10,6 @@ public class ProgramInfo {
     private String name;
     private String description;
     private String guide;
+    private Integer travelId;
     private Integer price;
 }

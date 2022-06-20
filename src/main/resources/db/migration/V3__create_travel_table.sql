@@ -3,10 +3,11 @@ CREATE TABLE travel (
     start_date date,
     end_date date,
     days integer,
-    accommodation_id integer,
-    destination_id integer,
-    whole_price integer NOT NULL,
+    whole_price integer,
     full_income integer,
     deleted boolean,
+    destination_id integer,
     PRIMARY KEY (id)
 );
+
+    ALTER TABLE travel ADD CONSTRAINT fk_destination FOREIGN KEY (destination_id) REFERENCES destination (id);

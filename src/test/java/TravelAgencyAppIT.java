@@ -3,7 +3,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import travelagency.TravelAgencyApp;
 
-@SpringBootTest(classes = TravelAgencyApp.class)
+@SpringBootTest(classes = TravelAgencyApp.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
 public class TravelAgencyAppIT {
 
