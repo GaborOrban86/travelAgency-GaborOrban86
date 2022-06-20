@@ -52,9 +52,8 @@ Utazók mentése, listázása, keresése, módosítása és törlése.
 
 **Az alkalmazás kapcsolati diagramja a travel-agency-diagram.jpg képfájt megnyitva tekinthető meg.**
 
-
-
-
+## Swagger dokumentáció a konténerek létrehozása után:
+**http://localhost:8088/swagger-ui.html**
 
 
 

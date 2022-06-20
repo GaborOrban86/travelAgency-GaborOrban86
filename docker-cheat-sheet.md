@@ -8,4 +8,4 @@ mvn clean package
 
 docker build -t travelagency .
 
-docker run --name travelagency --network travel_network -p 8080:8080 -d travelagency
+docker run --name travelagency --network travel_network -p 8088:8080 -d travelagency
