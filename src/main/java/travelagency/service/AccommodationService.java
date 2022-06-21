@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import travelagency.domain.Accommodation;
 import travelagency.domain.Travel;
+import travelagency.domain.enums.AccommodationCatering;
+import travelagency.domain.enums.AccommodationType;
 import travelagency.dto.AccommodationCreateCommand;
 import travelagency.dto.AccommodationInfo;
 import travelagency.dto.AccommodationModifyCommand;
@@ -47,8 +49,8 @@ public class AccommodationService {
         }
 
         toSave.setName(command.getName());
-        toSave.setType(command.getType().toUpperCase(Locale.ROOT));
-        toSave.setCatering(command.getCatering().toUpperCase(Locale.ROOT));
+        toSave.setType(AccommodationType.valueOf(command.getType().toUpperCase(Locale.ROOT)));
+        toSave.setCatering(AccommodationCatering.valueOf(command.getCatering().toUpperCase(Locale.ROOT)));
         toSave.setPrice(command.getPrice());
 
 
@@ -91,8 +93,8 @@ public class AccommodationService {
                         (command.getPrice() * travelOfAccommodation.getDays()));
 
         toModify.setName(command.getName());
-        toModify.setType(command.getType().toUpperCase(Locale.ROOT));
-        toModify.setCatering(command.getCatering().toUpperCase(Locale.ROOT));
+        toModify.setType(AccommodationType.valueOf(command.getType().toUpperCase(Locale.ROOT)));
+        toModify.setCatering(AccommodationCatering.valueOf(command.getCatering().toUpperCase(Locale.ROOT)));
         toModify.setPrice(command.getPrice());
 
         return modelMapper.map(toModify, AccommodationInfo.class);

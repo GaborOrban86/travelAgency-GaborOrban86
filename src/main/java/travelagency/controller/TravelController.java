@@ -45,7 +45,7 @@ public class TravelController {
     @Operation(summary = "List all travels", description = "List all travels.")
     @ResponseStatus(HttpStatus.OK)
     public List<TravelInfo> findAll() {
-        log.info("Http request, PUT /api/travels");
+        log.info("Http request, GET /api/travels");
         return travelService.findAllTravels();
     }
 

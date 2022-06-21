@@ -25,6 +25,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
+import static travelagency.domain.enums.AccommodationCatering.FULL;
+import static travelagency.domain.enums.AccommodationType.SOLO;
 
 @ExtendWith({MockitoExtension.class, SoftAssertionsExtension.class})
 public class TravellerServiceTest {
@@ -138,8 +140,8 @@ public class TravellerServiceTest {
         travellerService = new TravellerService(travellerRepository, travelRepository, modelMapper);
         Accommodation accommodation = new Accommodation();
         accommodation.setName("Hilton Hotel");
-        accommodation.setType("SOLO");
-        accommodation.setCatering("FULL");
+        accommodation.setType(SOLO);
+        accommodation.setCatering(FULL);
         accommodation.setTravel(travel);
         accommodation.setPrice(10000);
         accommodation.setDeleted(false);

@@ -2,6 +2,8 @@ package travelagency.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import travelagency.domain.enums.AccommodationCatering;
+import travelagency.domain.enums.AccommodationType;
 
 import javax.persistence.*;
 
@@ -16,8 +18,12 @@ public class Accommodation {
     private Integer id;
 
     private String name;
-    private String type;
-    private String catering;
+
+    @Enumerated(value = EnumType.STRING)
+    private AccommodationType type;
+
+    @Enumerated(value = EnumType.STRING)
+    private AccommodationCatering catering;
 
     @OneToOne
     @JoinColumn(name = "travel_id")
