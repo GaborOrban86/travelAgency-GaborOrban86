@@ -45,6 +45,7 @@ public class TravelController {
     @Operation(summary = "List all travels", description = "List all travels.")
     @ResponseStatus(HttpStatus.OK)
     public List<TravelInfo> findAll() {
+        log.info("Http request, PUT /api/travels");
         return travelService.findAllTravels();
     }
 
@@ -53,7 +54,7 @@ public class TravelController {
     @ResponseStatus(HttpStatus.OK)
     public TravelInfo modifyTravel(@PathVariable("travelId") Integer travelId,
                                    @RequestBody @Valid TravelModifyCommand updateCommand) {
-        log.info("Http request, POST /api/travels/{travelId}, body: " + updateCommand.toString());
+        log.info("Http request, PUT /api/travels/{travelId}, body: " + updateCommand.toString());
         return travelService.updateTravelDates(travelId, updateCommand);
     }
 

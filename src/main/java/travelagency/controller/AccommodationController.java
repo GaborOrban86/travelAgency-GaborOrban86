@@ -37,7 +37,7 @@ public class AccommodationController {
     @Operation(summary = "Find accommodation by id", description = "Find accommodation by id.")
     @ResponseStatus(HttpStatus.OK)
     public AccommodationInfo getAccommodationById(@PathVariable("accommodationId") Integer accommodationId) {
-        log.info("Http request, GET /api/travels/{accommodationId}, parameter: " + accommodationId);
+        log.info("Http request, GET /api/accommodations/{accommodationId}, parameter: " + accommodationId);
         return accommodationService.findAccommodationById(accommodationId);
     }
 
@@ -45,6 +45,7 @@ public class AccommodationController {
     @Operation(summary = "List all accommodations", description = "List all accommodations.")
     @ResponseStatus(HttpStatus.OK)
     public List<AccommodationInfo> findAll() {
+        log.info("Http request, GET /api/accommodations");
         return accommodationService.findAllAccommodations();
     }
 
@@ -53,7 +54,7 @@ public class AccommodationController {
     @ResponseStatus(HttpStatus.OK)
     public AccommodationInfo modifyAccommodation(@PathVariable("accommodationId") Integer accommodationId,
                                                  @RequestBody @Valid AccommodationModifyCommand updateCommand) {
-        log.info("Http request, POST /api/accommodations/{accommodationId}, body: " + updateCommand.toString());
+        log.info("Http request, PUT /api/accommodations/{accommodationId}, body: " + updateCommand.toString());
         return accommodationService.modifyAccommodation(accommodationId, updateCommand);
     }
 

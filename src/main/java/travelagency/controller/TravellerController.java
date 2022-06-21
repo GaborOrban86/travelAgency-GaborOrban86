@@ -38,7 +38,7 @@ public class TravellerController {
     @Operation(summary = "Find traveller by id", description = "Find traveller by id.")
     @ResponseStatus(HttpStatus.OK)
     public TravellerInfo getTravellerById(@PathVariable("travellerId") Integer travellerId) {
-        log.info("Http request, GET /api/travels/{travellerId}, parameter: " + travellerId);
+        log.info("Http request, GET /api/travellers/{travellerId}, parameter: " + travellerId);
         return travellerService.findTravellerById(travellerId);
     }
 
@@ -46,6 +46,7 @@ public class TravellerController {
     @Operation(summary = "List all travellers", description = "List all travellers.")
     @ResponseStatus(HttpStatus.OK)
     public List<TravellerInfo> findAll() {
+        log.info("Http request, GET /api/travellers");
         return travellerService.findAllTravellers();
     }
 
@@ -54,7 +55,7 @@ public class TravellerController {
     @ResponseStatus(HttpStatus.OK)
     public TravellerInfo modifyTraveller(@PathVariable("travellerId") Integer travellerId,
                                          @RequestBody @Valid TravellerModifyCommand updateCommand) {
-        log.info("Http request, POST /api/travellers/{travellerId}, body: " + updateCommand.toString());
+        log.info("Http request, PUT /api/travellers/{travellerId}, body: " + updateCommand.toString());
         return travellerService.modifyTravellerNameAndEmail(travellerId, updateCommand);
     }
 

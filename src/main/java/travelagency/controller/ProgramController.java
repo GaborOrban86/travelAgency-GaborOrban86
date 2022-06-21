@@ -37,7 +37,7 @@ public class ProgramController {
     @Operation(summary = "Find program by id", description = "Find program by id.")
     @ResponseStatus(HttpStatus.OK)
     public ProgramInfo getProgramById(@PathVariable("programId") Integer programId) {
-        log.info("Http request, GET /api/travels/{programId}, parameter: " + programId);
+        log.info("Http request, GET /api/programs/{programId}, parameter: " + programId);
         return programService.findProgramById(programId);
     }
 
@@ -45,6 +45,7 @@ public class ProgramController {
     @Operation(summary = "List all programs", description = "List all programs.")
     @ResponseStatus(HttpStatus.OK)
     public List<ProgramInfo> findAll() {
+        log.info("Http request, GET /api/programs");
         return programService.findAllPrograms();
     }
 
@@ -53,7 +54,7 @@ public class ProgramController {
     @ResponseStatus(HttpStatus.OK)
     public ProgramInfo modifyProgram(@PathVariable("programId") Integer programId,
                                      @RequestBody @Valid ProgramModifyCommand updateCommand) {
-        log.info("Http request, POST /api/programs/{programId}, body: " + updateCommand.toString());
+        log.info("Http request, PUT /api/programs/{programId}, body: " + updateCommand.toString());
         return programService.modifyProgram(programId, updateCommand);
     }
 
