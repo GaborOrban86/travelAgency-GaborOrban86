@@ -19,10 +19,10 @@ public class TravelCreateCommand {
     private Integer destinationId;
 
     @Future(message = "Must be a future date!")
-    @Schema(description = "Start date of travel", example = "2022-09-10")
+    @Schema(description = "Start date of travel", example = "2023-09-10")
     private LocalDate startDate;
 
     @Future(message = "Must be a future date!")
-    @Schema(description = "End date of travel", example = "2022-09-12")
+    @Schema(description = "End date of travel", example = "2023-09-12")
     private LocalDate endDate;
 }

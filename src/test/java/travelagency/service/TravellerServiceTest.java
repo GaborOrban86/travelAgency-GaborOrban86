@@ -172,7 +172,7 @@ public class TravellerServiceTest {
         traveller.setName("Tim Travel");
         traveller.setEmail("tim@travel.hu");
         traveller.setBirthday(LocalDate.of(2000, Month.AUGUST, 1));
-        traveller.setAge(21);
+        traveller.setAge(22);
         traveller.setTravel(travel);
         traveller.setAllFees(20000);
         traveller.setDeleted(false);

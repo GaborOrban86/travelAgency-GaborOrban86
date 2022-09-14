@@ -113,7 +113,6 @@ public class AccommodationService {
         Integer allDaysAccommodationPrice = accommodationFound.getPrice() * travelOfAccommodation.getDays();
         travelOfAccommodation.setWholePrice(travelOfAccommodation.getWholePrice() - allDaysAccommodationPrice);
         travelOfAccommodation.setAccommodation(null);
-        accommodationFound.setTravel(null);
-        accommodationRepository.delete(accommodationFound);
+        accommodationFound.setDeleted(true);
     }
 }

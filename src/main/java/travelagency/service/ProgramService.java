@@ -116,6 +116,6 @@ public class ProgramService {
                 (travelOfProgram.getWholePrice() - programFound.getPrice()));
         travelOfProgram.getPrograms().remove(programFound);
         programFound.setTravel(null);
-        programRepository.delete(programFound);
+        programFound.setDeleted(true);
     }
 }

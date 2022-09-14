@@ -31,8 +31,8 @@ public class TravelControllerIT {
     @BeforeEach
     void putTravel() {
         restTemplate.postForObject("/api/travels",
-                new TravelCreateCommand(2, LocalDate.of(2022, Month.SEPTEMBER, 10),
-                        LocalDate.of(2022, Month.SEPTEMBER, 12)), TravelInfo.class);
+                new TravelCreateCommand(2, LocalDate.of(2023, Month.SEPTEMBER, 10),
+                        LocalDate.of(2023, Month.SEPTEMBER, 12)), TravelInfo.class);
     }
 
     @Test
@@ -55,8 +55,8 @@ public class TravelControllerIT {
         assertThat(daysBeforeModify).isEqualTo(2);
 
         restTemplate.put("/api/travels/1", new TravelModifyCommand(
-                LocalDate.of(2022, Month.SEPTEMBER, 10),
-                LocalDate.of(2022, Month.SEPTEMBER, 11)), TravelModifyCommand.class);
+                LocalDate.of(2023, Month.SEPTEMBER, 10),
+                LocalDate.of(2023, Month.SEPTEMBER, 11)), TravelModifyCommand.class);
 
         int daysAfterModify = restTemplate.getForObject("/api/travels/1", TravelInfo.class).getDays();
         assertThat(daysAfterModify).isEqualTo(1);

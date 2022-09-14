@@ -28,8 +28,8 @@ public class ProgramControllerIT {
     @BeforeEach
     void putTravelAndProgram() {
         restTemplate.postForObject("/api/travels",
-                new TravelCreateCommand(2, LocalDate.of(2022, Month.SEPTEMBER, 10),
-                        LocalDate.of(2022, Month.SEPTEMBER, 13)), TravelInfo.class);
+                new TravelCreateCommand(2, LocalDate.of(2023, Month.SEPTEMBER, 10),
+                        LocalDate.of(2023, Month.SEPTEMBER, 13)), TravelInfo.class);
         restTemplate.postForObject("/api/programs",
                 new ProgramCreateCommand("Hide and Seek", "Funny Game", "Peter Program",
                         12000, 1), ProgramCreateCommand.class);

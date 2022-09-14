@@ -28,8 +28,8 @@ public class AccommodationControllerIT {
     @BeforeEach
     void putTravelAndAccommodation() {
         restTemplate.postForObject("/api/travels",
-                new TravelCreateCommand(2, LocalDate.of(2022, Month.SEPTEMBER, 10),
-                        LocalDate.of(2022, Month.SEPTEMBER, 13)), TravelInfo.class);
+                new TravelCreateCommand(2, LocalDate.of(2023, Month.SEPTEMBER, 10),
+                        LocalDate.of(2023, Month.SEPTEMBER, 13)), TravelInfo.class);
         restTemplate.postForObject("/api/accommodations",
                 new AccommodationCreateCommand("Hilton", "SOLO", "FULL", 1, 10000),
                 AccommodationInfo.class);

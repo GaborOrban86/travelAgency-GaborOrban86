@@ -26,8 +26,4 @@ public class ProgramRepository {
         return entityManager.createQuery("SELECT p FROM Program p",
                 Program.class).getResultList();
     }
-
-    public void delete(Program toDelete) {
-        toDelete.setDeleted(true);
-    }
 }

@@ -124,6 +124,6 @@ public class TravelService {
 
         travelFound.getTravellers().clear();
         travelFound.getPrograms().clear();
-        travelRepository.delete(travelFound);
+        travelFound.setDeleted(true);
     }
 }

@@ -27,9 +27,5 @@ public class AccommodationRepository {
                 Accommodation.class).getResultList();
     }
 
-    public void delete(Accommodation toDelete) {
-        toDelete.setDeleted(true);
-    }
-
 
 }

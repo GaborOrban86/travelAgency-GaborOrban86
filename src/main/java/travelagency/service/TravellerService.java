@@ -106,7 +106,7 @@ public class TravellerService {
         travelOfTraveller.setFullIncome(travelOfTraveller.getFullIncome() - travellerFound.getAllFees());
         travellerFound.setTravel(null);
         travellerFound.setAllFees(0);
-        travellerRepository.delete(travellerFound);
+        travellerFound.setDeleted(true);
     }
 
 

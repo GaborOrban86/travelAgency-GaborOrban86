@@ -26,9 +26,4 @@ public class TravellerRepository {
         return entityManager.createQuery("SELECT t FROM Traveller t",
                 Traveller.class).getResultList();
     }
-
-
-    public void delete(Traveller toDelete) {
-        toDelete.setDeleted(true);
-    }
 }
